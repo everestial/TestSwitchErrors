@@ -279,15 +279,105 @@ End :)
 #####<font color="#729FCF"><b>... and it will repeat for another sample. </b></font>
 #####<font color="#729FCF"><b>... additionally the **`echo`** command will first create an empty file **`files_to_merge.txt`** and subsequently save the output path of the each sample.</b></font>
 
-#### Now, merge all the haplotype together 
+#### Now, merge all the haplotypes together 
 ```bash
 # remove the first empty line from the file that store path to the extended haplotype for each sample 
-echo "$(tail -n +2 files_to_merge.txt)" > files_to_merge.txt
+echo "$(tail -n +2 files_to_merge_setB_run01.txt)" > files_to_merge_setB_run01.txt
+
+# set the path for "merge_haplotypePandas.py" file ; **note: Update path as need be.
+mergeHAP=~priyanka/phase-Extender2018/merge_haplotypePandas.py
 
 # use, a python script to merge the haplotypes together
-python3 ~priyanka/phase-Extender2018/merge_haplotypePandas.py --hapList files_to_merge.txt --output SetA_run02
+python3 ${mergeHAP} --hapList files_to_merge_setB_run01.txt --output SetA_run02
 ```
-All 
+####<font color="#729FCF"><b>**Terminal Output:**</b></font>
+
+<pre>
+Checking required modules 
+
+Reading HAPLOTYPE file names obtained from phase-Extender
+
+## Loading the haplotype files
+
+names : SetA/phased_NA12891_SetA_run01/extended_haplotype_NA12891.txt
+
+Sample name: NA12891 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 55.69 (mb)
+
+names : SetA/phased_NA12892_SetA_run01/extended_haplotype_NA12892.txt
+
+Sample name: NA12892 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 57.58 (mb)
+
+names : SetA/phased_NA06989_SetA_run01/extended_haplotype_NA06989.txt
+
+Sample name: NA06989 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 58.39 (mb)
+
+names : SetA/phased_NA10850_SetA_run01/extended_haplotype_NA10850.txt
+
+Sample name: NA10850 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 59.26 (mb)
+
+names : SetA/phased_NA06984_SetA_run01/extended_haplotype_NA06984.txt
+
+Sample name: NA06984 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 60.18 (mb)
+
+names : SetA/phased_NA07056_SetA_run01/extended_haplotype_NA07056.txt
+
+Sample name: NA07056 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 60.80 (mb)
+
+names : SetA/phased_NA12045_SetA_run01/extended_haplotype_NA12045.txt
+
+Sample name: NA12045 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 61.56 (mb)
+
+names : SetA/phased_NA11843_SetA_run01/extended_haplotype_NA11843.txt
+
+Sample name: NA11843 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 62.13 (mb)
+
+names : SetA/phased_NA12890_SetA_run01/extended_haplotype_NA12890.txt
+
+Sample name: NA12890 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 62.61 (mb)
+
+names : SetA/phased_NA12889_SetA_run01/extended_haplotype_NA12889.txt
+
+Sample name: NA12889 
+Dropping columns and appending the pandas to a list
+  - Worker maximum memory usage : 63.65 (mb)
+
+
+Merging all the haplotype files together
+  - Worker maximum memory usage : 95.10 (mb)
+Global maximum memory usage: 95.10 (mb)
+elapsed time:  1.6246700286865234
+</pre>
+
+After running above code, the output directory `SetA_run02` will include file named "merged_haplotype.txt". **This file is comparable to the file we started with (i.e "simulated_RBphasedHaplotype_SetA.txt") but has larger and improved haplotype blocks.**
+
+```BASH
+# Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetA_run02.txt"
+$ cp SetA_run02/merged_haplotype.txt SetA_run02/phaseExtendedHaplotype_SetA_run02.txt
+```
+
+**Note:** A `BASH SHELL` script is available as file "PhaseExtenderOnForLoopSetA.sh" in this tutorial. This script includes code to run phaseExtension on a for-loop and also to merge the haplotype output for each sample.
+```bash
+# simply do
+$ ./PhaseExtenderOnForLoopSetA.sh
+```
 
 
 
@@ -299,164 +389,22 @@ All
 
 
 ## 03 - Set (B) : for HAPLOTYPE file with 25 samples.
-<pre>
-$ python3 ~priyanka/phase-Extender2018/phase-Extender.py --input SetB/final_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output phasedNA12891_setB_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
-</pre>
+The process for running haplotype phaseExtension on samples from SetB is typically the same. 
 
-<pre>
-Checking and importing required modules: 
+I have included a `BASH SHELL` script file "PhaseExtenderOnForLoop_SetB.sh"
+```bash
+# simply run
+$ ./PhaseExtenderOnForLoop_SetB.sh
+```
+**which will:**
+  - run phase extension on all 25 samples inside **SetA**.
+  - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB_run02**.
 
-#######################################################################
-        Welcome to phase-extender version 1       
-  Author: kiranNbishwa (bkgiri@uncg.edu, kirannbishwa01@gmail.com) 
-#######################################################################
-
-Loading the argument variables ....
-Assigning values to the global variables ....
-  - sample of interest: &quot;NA12891&quot; 
-  - using &quot;1&quot; processes 
-  - using haplotype file &quot;SetB/final_Simulated_RBphasedHaplotype.txt&quot; 
-  - using log2 odds cut off of &quot;5.0&quot; 
-  - each consecutive haplotype block should have minimum of &quot;3&quot; SNPs 
-  - using maximum of &quot;25&quot; heterozygote sites in each consecutive blocks to compute transition probabilities
-  - using &quot;max product&quot; to estimate the cumulative maximum likelyhood of each haplotype configuration between two consecutive blocks 
-  - no bed file is given.
-  - no reference haplotype panel is provided 
-  - statistics of the haplotype before and after extension will be prepared for the sample of interest i.e &quot;NA12891&quot; 
-  - LOD (log 2 of odds) for consecutive block will be written to the output file 
-
-
-# Reading the input haplotype file &quot;SetB/final_Simulated_RBphasedHaplotype.txt&quot; 
-  - Lines that have data missing for sample &quot;NA12891&quot; is written in the file &quot;phasedNA12891_setB_run01/missingdata_NA12891.txt&quot; 
-
-# Genomic bed file is not provided ... 
-  - So, phase extension will run throughout the genome.
-
-# Haplotype reference panel is not provided ... 
-  So, phase extension will run using the samples available in the input haplotype file. 
-
-# Filtered the lines that have data missing for sample &quot;NA12891&quot;; check the file &quot;phasedNA12891_setB_run01/missingdata_NA12891.txt&quot; 
-  - Loaded read-backphased variants onto the memory
-
-# Haplotype reference panel is not provided....
-  - Only using the samples in the input (&quot;SetB/final_Simulated_RBphasedHaplotype.txt&quot;) data.
-
-# No bed file is given ... 
-  - So, grouping the haplotype file only by chromosome (contig)
-
-# Writing initial haplotype for sample &quot;NA12891&quot; in the file &quot;initial_haplotype_NA12891.txt&quot; 
-  - Computing the descriptive statistics of the haplotype data before phase extension
-
-
-# Starting multiprocessing using &quot;1&quot; processes 
-
-
-## Extending haplotype blocks in chromosome (contig) 20
-  - Grouping the dataframe using unique &quot;PI - phased index&quot; values. 
-  - Starting MarkovChains for contig 20
-  - Phase-extension completed for contig &quot;20&quot; in 10.893038272857666 seconds
-  - Worker maximum memory usage: 109.40 (mb)
-
-
-Completed haplotype extension for all the chromosomes.time elapsed: &apos;13.083601713180542&apos; 
-Global maximum memory usage: 117.68 (mb)
-Merging dataframes together .....
-
-Extended haplotype data for sample &quot;NA12891&quot; is written in the file &quot;extended_haplotype_NA12891.txt&quot;. 
-
-Computing the descriptive statistics of the extended haplotype file.
-
-
-Run is complete for all the chromosomes (contigs)
-
-writing singletons and missing sites to extended haplotype
-End :)
-</pre>
+```BASH
+# Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetB_run02.txt"
+$ cp SetB_run02/merged_haplotype.txt SetB_run02/phaseExtendedHaplotype_SetB_run02.txt
+```
 
 ## Test switch errors
 
-
-
 ### Step 04: Second recursive run of haplotype phasing 
-# Now, we need to update the original HAPLOTYPE file by inserting the extend haplotype of sample "NA12891"
-  # - first we remove the old haplotype for sample "NA12891"
-  # - then we insert the extended haplotype file. 
-
-## 04 - A: update haplotype from set-A
-# let's write a small python script ("remove_sample.py") to open the HAPLOTYPE file from Set-A, and write the HAPLOTYPE file without "NA12891"
-# the file "remove_sample.py" should contain the following codes (properly indented).
-
-<pre>
-#!/home/bin/python
-
-import sys
-input_f = sys.argv[1]
-sample_n = sys.argv[2]
-with open(input_f) as input_file:
-    for lines in input_file:
-        if lines.startswith("CHROM"):
-            header = lines.rstrip("\n").split("\t")
-	    
-            # now find the index of the sample "NA12891" so we can remove it.
-            headers_to_keep = [header.index(x) for x in header if not x.startswith(sample_n)]
-            print('\t'.join([header[x] for x in headers_to_keep]))
-
-        # now write other lines 
-        split_lines = lines.rstrip('\n').split('\t')
-        print('\t'.join([split_lines[x] for x in headers_to_keep]))
-</pre>
-
-# now, call the script as
-<pre>
-$ python3 remove_sample.py final_Simulated_RBphasedHaplotype.txt NA12891: > no.NA12891_RBphasedHaplotype.txt
-</pre>
-
-			
-## 04 - B: Now, merge this file "no.NA12891_RBphasedHaplotype.txt" with the "extended_haplotype_NA12891.txt" using another python script
-# The "extended_haplotype_NA12891.txt" file should be found inside the output folder from earlier phaseExtender run.
-# we will use python script called ... 
-  # this script takes in HAPLOTYPE file and merges them. It is also possible to merged output from several phaseExtender output.
-  # instead of directly providing the file name in script, we rather provide a file that contains the path to the HAPLOTYPE files.
-
-# so, we create a file named "file_to_merge.txt" and add the path of the files we want to merge.
-~/phasedNA12891_setA_run01/extended_haplotype_NA12891.txt
-~/SetA/no.NA12891_RBphasedHaplotype.txt
-
-# and now call the python script and along with the "file_to_merge.txt" 
-<pre>
-$ python3 ~priyanka/phase-Extender2018/merge_haplotypePandas.py --hapList file_to_merge.txt --output setA_run02
-
-Checking required modules 
-
-Reading HAPLOTYPE file names obtained from phase-Extender
-
-## Loading the haplotype files
-
-names : /home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/HapMap3_r2_b36_2009/Contd_PhaseQC_PhaseExtender/phasedNA12891_setA_run01/extended_haplotype_NA12891.txt
-
-Sample name: NA12891 
-Dropping columns and appending the pandas to a list
-  - Worker maximum memory usage : 55.93 (mb)
-
-names : /home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/HapMap3_r2_b36_2009/Contd_PhaseQC_PhaseExtender/SetA/no.NA12891_RBphasedHaplotype.txt
-
-Sample name: NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889,NA12892 
-Dropping columns and appending the pandas to a list
-  - Worker maximum memory usage : 72.85 (mb)
-
-
-Merging all the haplotype files together
-  - Worker maximum memory usage : 90.80 (mb)
-Global maximum memory usage: 90.80 (mb)
-elapsed time:  0.7373621463775635
-</pre>
-
-# the output file "merged_haplotype.txt" is in folder "setA_run02"
-# we can rename it to : phased_setA_run02_Simulated_RBphasedHaplotype.txt
-
-# Now, run second round of haplotype phase extension
-$ python3 ~priyanka/phase-Extender2018/phase-Extender.py --input setA_run02/phased_setA_run02_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output phasedNA12891_setA_run02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
-
- 
-
-
