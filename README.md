@@ -1,79 +1,117 @@
-# TestSwitchErrors
-This is a tutorial that shows how phaseExtender can be used for recursive improvement of haplotype phasing and how to test the phasing quality by measuring switcherrors.
+
+###This file is used for testing switcherror while doing haplotype phasing using PhaseExtender.
+
+### Goal of the tutorial:
+Infer haplotype of the HapMap Sample (NA12891 from b36) using **phaseExtender** and test the phase quality using switcherror metrices. The phasing quality is then compared to phasing reported by **ShapeIT**.
 
 
-This tutorial add more codes/scripts and details by taking in tutorial from Zhan ... 
+### Step 01: Check metrices of the inputfiles. 
+This is covered under the tutorial that runs haplotype phasing for sample (NA12891) using **ShapeIT**.
 
-#!/usr/bin/env bash
+**Required files:** Same files used with "ShapeIT".
+  - We need three types of file: Haps/Sample/Legend
+  - geneticMap file is ignored in phaseExtender 
 
-#This file is used for testing switcherror while doing haplotype phasing using PhaseExtender.
+### Step 02: Prepared ReadBackPhased "HAPLOTYPE" file. 
 
-#Goal of the tutorial:
-# Infer haplotype of the HapMap Sample (NA12891) and test the quality using switcherror metrices
+**This is what we will do:**
+  - **2)** create HAPLOTYPE file compatible with **phaseExtender** 
+  **Note:** Unlike **ShapeIT** **phaseExtender** takes haplotype as IUPAC base.
+    - first we select 9 (SetA) and then 24 (SetB) random samples from CEU population. In addition to this random samples we will include sample (NA12891). So, we will have two sets
+    - we will then convert haplotype for these samples into HAPLOTYPE file. This original HAPLOTYPE file is stored as "truth set". 
+    - We will then take this truth set and create a simulated ReadBackPhased HAPLOTYPE file (required by phaseExtender) for all the samples.
+    
+    **Note:** We will use small python application called **`makeHapFile.py`** which will cover all the above steps. 
+    The number of ReadBackPhased heterozygote variants in the ReadBackphased blocks is simulated to follow a poisson like distribution (not exactly possion but has a right skew). The mean number of RBphased variants is picked randomly at (5, 6, or 7) with min number of variants at 3 and maximum at 30. The simulation creates a distribution that is likely observed in real RBphased haplotype data.
 
-######## Start ##########
-#########################
+  - **3)** The simulated ReadBackPhased HAPLOTYPE file is then used with **phaseExtender** to improve phasing. **Note:** Unlike in **ShapeIT** method, with **phaseExtender** we improve the phasing for all the samples.
+    - **Then we will compare the phasing quality for sample (NA12891).**
 
-### Step 01: Check metrices of the inputfiles to be used. 
-## This is done above in the tutorial that is related to ................
+  - **4)** Then we will join the output haplotype for each sample to run another round of phase extension.
+  - **5)** This way we can recursively apply haplotype phase improvements until optimal results are obtained.
 
-# We need three types of file: Haps/Sample/Legend which shoud be loaded in the folder
-# geneticMap file is ignored in phaseExtender 
+<br>
 
+## Now, we begin our phase extension using phaseExtender.
+All, the required files for this tutorial is available at ... ???
 
-### Remaining steps are : 
-# find position of NA12891 -> extract the data and create haplotype file 
-# extract sets of 10, 25 and 50 random samples from CEU population 
-	# -> then extract data and create truth and simulated HAPLOTYPE file (required by phaseExtender)
-# **Note: We use small python application called "makeHapFile.py" to make HAPLOTYPE file from ShapeIT format files
+### Step 02-A: Prepare HAPLOTYPE data (truth set and simulated set).
 
-# run phaseExtender -> then test switchError/Points statistics 
-# run phaseExtender (recursive 02) -> then test switchError/Points statistics 
-# compare the output against ShapeIt.
+#### Set A: make HAPLOTYPE file with 10 samples
 
+```
+We are using samples:
+NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889
+```
+```bash
+#check if required files are there
+$ls
+hapmap3_r2_b36_all.sample
+hapmap3_r2_b36_chr20.haps
+hapmap3_r2_b36_chr20.legend
+makeHapFile.py
 
-### Step 02: Extract HAPLOTYPE data (truth set and simulated set).
+# make directory to store the file for "SetA"
+$mkdir SetA
+```
 
-# 02 - Set A: with 10 samples 
-# using samples: NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889
-python3 makeHapFile.py -haps hapmap3_r2_b36_chr20.haps -legend hapmap3_r2_b36_chr20.legend -sample_file hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889
-
+```python
+# now, run the python script 
+$ python3 makeHapFile.py -haps hapmap3_r2_b36_chr20.haps -legend hapmap3_r2_b36_chr20.legend -sample_file hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889 -output_truth SetA/truth_RBphasedHaplotype_SetA.txt -output_sim SetA/simulated_RBphasedHaplotype_SetA.txt
+```
 
 <pre>
 Purpose of the application : This application simulates ReadBackPhased haplotype given *.haps, *.legend and *.sample file are provided.
 
 Extracting haplotype data for each sample of interest ..... 
-Sample:  NA06989
-Sample:  NA10850
-Sample:  NA06984
-Sample:  NA07056
-Sample:  NA12045
-Sample:  NA11843
-Sample:  NA12890
-Sample:  NA12889
-Sample:  NA12892
-Sample:  NA12891
+Sample 1 :  NA06989
+Sample 2 :  NA10850
+Sample 3 :  NA06984
+Sample 4 :  NA07056
+Sample 5 :  NA12045
+Sample 6 :  NA11843
+Sample 7 :  NA12890
+Sample 8 :  NA12889
+Sample 9 :  NA12892
+Sample 10 :  NA12891
 
-Writing truth set haplotype data to a file .... 
+Writing truth set haplotype data to a file &quot;SetA/truth_RBphasedHaplotype_SetA.txt&quot; .... 
 
-Writing simulated set haplotype data to a file .... 
+Writing simulated set haplotype data to a file &quot;SetA/simulated_RBphasedHaplotype_SetA.txt&quot; .... 
 
-Process completed !!! :) :)
+Process completed !!! :) :) 
 </pre>
 
+```bash
+# navigate to the directory that contains "SetA" data set
+$ cd SetA
 
+# and you should be able to see both the "truth" and "simulated" haplotype data set.
+../SetA$ ls
+simulated_RBphasedHaplotype_SetA.txt
+truth_RBphasedHaplotype_SetA.txt
+```
 
-# 02 - Set (B): with 25 samples 
-# Samples selected: 
-	# NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,NA12383,NA12154,
-	# NA12749,NA12890,NA12776,NA12827,NA12342,NA11891,NA11920,NA12778,NA12763,NA12399,
-	# NA11995,NA12750,NA12875,NA06985,NA12400
+####<font color="#729FCF"><b>We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**.</b></font>
+<br>
 
-python3 makeHapFile.py -haps hapmap3_r2_b36_chr20.haps -legend hapmap3_r2_b36_chr20.legend \
-	-sample_file hapmap3_r2_b36_all.sample -chr 20 \
-	-samples NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,NA12383,NA12154,\
-		NA12749,NA12890,NA12776,NA12827,NA12342,NA11891,NA11920,NA12778,NA12763,NA12399,\
-		NA11995,NA12750,NA12875,NA06985,NA12400
+**But, before doing any further phase extension let's make another simulated set (i.e `SetB`) of RBphased haplotype using 25 samples. So we can compare how sample size effects phasing quality in phaseExtender.**
+
+#### Set B: Make another HAPLOTYPE file with 25 samples
+```
+We are using samples:
+NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,NA12383,NA12154,NA12749,NA12890,NA12776,NA12827,NA12342,NA11891,NA11920,NA12778,NA12763,NA12399,NA11995,NA12750,NA12875,NA06985,NA12400
+```
+
+```python
+# make another directory to store files for SetB
+$ mkdir SetB
+
+# now, run the python script 
+$ python3 makeHapFile.py -haps hapmap3_r2_b36_chr20.haps -legend hapmap3_r2_b36_chr20.legend -sample_file hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,\
+NA12383,NA12154,NA12749,NA12890,NA12776,NA12827,NA12342,NA11891,\
+NA11920,NA12778,NA12763,NA12399,NA11995,NA12750,NA12875,NA06985,NA12400 -output_truth SetB/truth_RBphasedHaplotype_SetB.txt -output_sim SetB/simulated_RBphasedHaplotype_SetB.txt
+```
 
 <pre>
 Purpose of the application : This application simulates ReadBackPhased haplotype given *.haps, *.legend and *.sample file are provided.
@@ -105,22 +143,68 @@ Sample 23 :  NA11995
 Sample 24 :  NA12750
 Sample 25 :  NA12875
 
-Writing truth set haplotype data to a file .... 
+Writing truth set haplotype data to a file &quot;SetB/truth_RBphasedHaplotype_SetB.txt&quot; .... 
 
-Writing simulated set haplotype data to a file .... 
+Writing simulated set haplotype data to a file &quot;SetB/simulated_RBphasedHaplotype_SetB.txt&quot; .... 
 
-Process completed !!! :) :)
+Process completed !!! :) :) 
 </pre>
 
+<br>
 
 
 ### Step 03 - Run haplotype phasing using HAPLOTYPE file. 
 
-## 03 - Set (A) : for HAPLOTYPE file with 10 samples.
+#### 03 - Set (A): for HAPLOTYPE file with 10 samples.
 
-<pre>
+```bash
+## make sure that the "phaseExtender" and required dependencies are installed
+# We can run phasing for single sample "NA12891" as 
 $ python3 ~priyanka/phase-Extender2018/phase-Extender.py --input SetA/final_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output phasedNA12891_setA_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
-</pre>
+```
+<br>
+
+##### But, instead of running phasing for only "NA12891" we run phasing for all the samples.
+```bash
+# We need "BASH" shell script to run phasing on all the samples (on for-loop).
+# Let's test the SHELL that is active on the background
+$ echo $0
+bash
+```
+<br>
+
+**We use the below bash script to :**
+  - run **phaseExtender** on all the samples.
+    - the output of each sample will be in a different folder with several haplotype based metrics.
+    - we can consider the phased haplotype of each sample as a final phase. Or, we can join the phased haplotype of each sample and further improve haplotype by re-running phasing recursively.
+  - We will join the output haplotype of each sample into a new HAPLOTYPE file.
+    - This file will then be used for another round of phaseExtender. 
+
+
+```bash
+#!/bin/bash
+
+## Run phaseExtension on all the samples using "for loop" 
+
+# set the path for phaseExtender.py file. **update your path as need be**
+phaseEXT=~priyanka/phase-Extender2018/phase-Extender.py
+
+# create empty file to store the path of each output haplotype
+echo > files_to_merge.txt
+
+for item in NA12891 NA12892 NA06989 NA10850 NA06984 NA07056 NA12045 NA11843 NA12890 NA12889
+do
+  # Run phaseExtension on the item (aka sample)
+  python3 ${phaseEXT} --input SetA/simulated_RBphasedHaplotype_SetA.txt --SOI ${item} --output SetA/phased_${item}_SetA_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
+
+  # also write the path of the output directory for each sample
+  # so, they can be merged later 
+  echo "SetA/phased_${item}_SetA_run01/extended_haplotype_${item}.txt" >> files_to_merge.txt
+done
+```
+<br>
+
+####<font color="#729FCF"><b>The above bash script will return a terminal output for each sample like ....</b></font>
 
 <pre>
 Checking and importing required modules: 
@@ -191,6 +275,22 @@ Run is complete for all the chromosomes (contigs)
 writing singletons and missing sites to extended haplotype
 End :)
 </pre>
+
+#####<font color="#729FCF"><b>... and it will repeat for another sample. </b></font>
+#####<font color="#729FCF"><b>... additionally the **`echo`** command will first create an empty file **`files_to_merge.txt`** and subsequently save the output path of the each sample.</b></font>
+
+#### Now, merge all the haplotype together 
+```bash
+# remove the first empty line from the file that store path to the extended haplotype for each sample 
+echo "$(tail -n +2 files_to_merge.txt)" > files_to_merge.txt
+
+# use, a python script to merge the haplotypes together
+python3 ~priyanka/phase-Extender2018/merge_haplotypePandas.py --hapList files_to_merge.txt --output SetA_run02
+```
+All 
+
+
+
 
 
 ## Let's test the number of switch errors
@@ -355,9 +455,8 @@ elapsed time:  0.7373621463775635
 # we can rename it to : phased_setA_run02_Simulated_RBphasedHaplotype.txt
 
 # Now, run second round of haplotype phase extension
-<pre>
 $ python3 ~priyanka/phase-Extender2018/phase-Extender.py --input setA_run02/phased_setA_run02_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output phasedNA12891_setA_run02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
-</pre>
+
  
- 
+
 
