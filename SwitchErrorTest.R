@@ -22,27 +22,22 @@ phased_SetA_NA12891 <- read.table('SetA_run02/phased_Haplotype_NA12891.txt', hea
 phased_SetA_NA12891
 
 # change the name of the header
-colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PI"] <- "true.NA12891.PI"
-colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PG_al"] <- "true.NA12891.PG_al"
+colnames(phased_SetA_NA12891)[colnames(phased_SetA_NA12891)=="NA12891.PI"] <- "phased.NA12891.PI"
+colnames(phased_SetA_NA12891)[colnames(phased_SetA_NA12891)=="NA12891.PG_al"] <- "phased.NA12891.PG_al"
 
 
+## Merge the truth and phased data set to identify switch errors
+merged.data <- merge(truthHaplotype_NA12891, phased_SetA_NA12891,
+                     by=c("CHROM", "POS"))
+merged.data
+merged.data <- merged.data[order(merged.data$POS),]
 
-## Merge the two data; but 
-
-
-## Write a function to identify switch points. 
-typeof(phased_SetA_NA12891)
-
-
-
-# read the matching data (data that contains )
-match <- read.table("out.match", header = FALSE)[,1]
-match
-typeof(match)
+# find the sites where switch errors happened 
+merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phased.NA12891.PG_al), 1, 0)
 
 # plot the data as png
 png("out.match.png", width = 1600, height = 600)
-plot(pos, match, main = "Switch points", type = "s")
+plot(merged.data$POS, merged.data$match, main = "Switch points", type = "s")
 dev.off()
 
 ## Compute switch errors metrices
@@ -51,7 +46,7 @@ total_possible_switch <- 0
 freq_switch <- 0
 
 # run a loop to compute frequecy of switch errors
-for (line in match){
+for (line in merged.data$match){
   allele = line
   total_possible_switch = total_possible_switch + 1
   if (previous_allele != allele){
@@ -65,6 +60,7 @@ total_possible_switch
 switch_error_rate = (freq_switch/total_possible_switch)
 switch_error_rate
 
+
 ## calculate the size distribution of the properly phased haplotype
 previous_allele <- 0
 hap_size <- 0
@@ -72,7 +68,7 @@ haplotype_size <- list()
 haplotype_size <- integer()
 
 # now, update the list using for loop
-for (line in match){
+for (line in merged.data$match){
   allele = line
   #print(allele)
   if (previous_allele == allele){
