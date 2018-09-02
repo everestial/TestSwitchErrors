@@ -378,13 +378,31 @@ $ cp SetA_run02/merged_haplotype.txt SetA_run02/phaseExtendedHaplotype_SetA_run0
 # simply do
 $ ./PhaseExtenderOnForLoopSetA.sh
 ```
-
-
-
-
-
 ## Let's test the number of switch errors
-????? 
+To do this we compare the **truth haplotype for setA (i.e `"SetA/truth_RBphasedHaplotype_SetA.txt"`)** with the **output file (i.e `"SetA_run02/phaseExtendedHaplotype_SetA_run02.txt"`)**.
+
+```bash
+## Extracting truth haplotype set for Sample "NA12891"
+$ head -n1 SetA/truth_RBphasedHaplotype_SetA.txt 
+CHROM	POS	REF	all-alleles	NA06989:PI	NA06989:PG_al	NA10850:PI	NA10850:PG_al	NA06984:PI	NA06984:PG_al	NA07056:PI	NA07056:PG_al	NA12045:PI	NA12045:PG_al	NA11843:PI	NA11843:PG_al	NA12890:PI	NA12890:PG_al	NA12889:PI	NA12889:PG_al	NA12892:PI	NA12892:PG_al	NA12891:PI	NA12891:PG_al
+
+# the index position of the haplotype for sample "NA12891" is 23 and 24.
+# we extract the this column but also remove the rows that are empty i.e "."
+# we also include the data from "CHROM" and "POS". This is used so we can make sure that the genotypes are coming from the same genomic position
+$ awk 'BEGIN{FS=OFS="\t"} {if ($24 !=".") print $1, $2, $23, $24}' SetA/truth_RBphasedHaplotype_SetA.txt > SetA/truth_Haplotype_NA12891.txt
+
+## Now, extract the phased haplotype for Sample "NA12891"
+$ head -n1 SetA_run02/phaseExtendedHaplotype_SetA_run02.txt 
+CHROM	POS	REF	all-alleles	all-freq	NA12891:PI	NA12891:PG_al	NA12892:PI	NA12892:PG_al	NA06989:PI	NA06989:PG_al	NA10850:PI	NA10850:PG_al	NA06984:PI	NA06984:PG_al	NA07056:PI	NA07056:PG_al	NA12045:PI	NA12045:PG_al	NA11843:PI	NA11843:PG_al	NA12890:PI	NA12890:PG_al	NA12889:PI	NA12889:PG_al
+
+# here the index position of the haplotype for sample "NA12891" is 6 and 7
+$ awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' SetA_run02/phaseExtendedHaplotype_SetA_run02.txt > SetA_run02/phased_Haplotype_NA12891.txt
+```
+
+#### Now, we import the truth and phased data into `R` to plot and quantify switch-errors
+
+
+
 
 
 
