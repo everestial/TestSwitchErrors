@@ -1,11 +1,11 @@
 
-### Set the required path 
+### Set the required path; **update the path as need be with your directory 
 getwd()
 setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/HapMap3_r2_b36_2009/Contd_PhaseQC_PhaseExtender")
 getwd()
 list.files()  # read available files and folders 
 
-### Read the required data
+#####  Read the required data  ######
 
 ## Import "truth haplotype" for SetA
 truthHaplotype_NA12891 <- read.table('SetA/truth_Haplotype_NA12891.txt', header = TRUE)
@@ -16,6 +16,7 @@ truthHaplotype_NA12891
 # change the name of the header
 colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PI"] <- "true.NA12891.PI"
 colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PG_al"] <- "true.NA12891.PG_al"
+
 
 ## Import "phased haplotype" for SetA
 phased_SetA_NA12891 <- read.table('SetA_run02/phased_Haplotype_NA12891.txt', header = TRUE)
@@ -29,64 +30,118 @@ colnames(phased_SetA_NA12891)[colnames(phased_SetA_NA12891)=="NA12891.PG_al"] <-
 ## Merge the truth and phased data set to identify switch errors
 merged.data <- merge(truthHaplotype_NA12891, phased_SetA_NA12891,
                      by=c("CHROM", "POS"))
-merged.data
+head(merged.data)
+
+# set the data in order by "POS" 
 merged.data <- merged.data[order(merged.data$POS),]
 
-# find the sites where switch errors happened 
-merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phased.NA12891.PG_al), 1, 0)
+# putting the order make the row index number not to be susequent
+# so, update them again
+rownames(merged.data) <- NULL
 
-# plot the data as png
-png("out.match.png", width = 1600, height = 600)
-plot(merged.data$POS, merged.data$match, main = "Switch points", type = "s")
+# Now, compare the "truth haplotype" with "phased haplotype" and ...
+# ... find the sites with consecutive properly phased haplotype blocks 
+merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phased.NA12891.PG_al), 0, 1)
+# **Note: the "match" column should have values "0's" and "1's". A continous "0" or "1" indicates 
+# .. properly phased block. But, transition from 0 -> 1 or from 1 -> 0 suggests a "Switch Error" betweeen the blocks.
+
+# Now, plot the "Switch Error" points as png
+png("out_match_SetA_phaseExtender.png", width = 1600, height = 600)
+plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic coordinates.", type = "s", 
+     xlab = "genomic position", ylab = "switch errors")
+#title(main = "Switch points", xlab = 'genomic coordinates', ylab = 'switch points')
+#abline(v=haplotype_breaks, col='red')
 dev.off()
 
-## Compute switch errors metrices
-previous_allele <- 0
+## Compute switch points metrices
+# "switch points" are when :
+  # we see 0 -> 1, or when 1 -> 0 in the "match" data
+  # PI of the haplotype block changes
+
+# create empty variables to store/update data on "for-loop" 
+previous_match <- 0
 total_possible_switch <- 0
-freq_switch <- 0
+freq_of_switch <- 0
+previous_pi <- 1  # **if PI of first block is something else change this
 
-# run a loop to compute frequecy of switch errors
-for (line in merged.data$match){
-  allele = line
+# the length (number of rows) of the dataframe
+seq_len <- length(merged.data$match)
+seq_len
+
+# run for loop on the whole sequence length to compute frequecy of switch points
+for (ith in c(1:seq_len)){
+  current_match = merged.data$match[ith]
+  current_pi = merged.data$phased.NA12891.PI[ith]
   total_possible_switch = total_possible_switch + 1
-  if (previous_allele != allele){
-    freq_switch = freq_switch + 1}
-  previous_allele = allele}
+  
+  if (previous_match != current_match | previous_pi != current_pi){
+    freq_of_switch = freq_of_switch + 1}
+  
+  previous_match = current_match
+  previous_pi = current_pi
+  }
 
-freq_switch
+freq_of_switch
 total_possible_switch
 
 # calculate switch error rate
-switch_error_rate = (freq_switch/total_possible_switch)
+switch_error_rate = (freq_of_switch/total_possible_switch)
 switch_error_rate
 
 
-## calculate the size distribution of the properly phased haplotype
-previous_allele <- 0
+## After the haplotype are phased by phaseExtender, it is important to know how the true haplotype 
+## ... is split into smaller true haplotype blocks; and what are it's sizes.
+## So, now we calculate the size distribution of the properly phased haplotype.
+# We need to account for the match and also for change in haplotype block index.
+previous_match <- 0
 hap_size <- 0
-haplotype_size <- list()
-haplotype_size <- integer()
+haplotype_sizes <- integer()  # to store the size of haplotype extended truly.
+previous_pi <- 1 
+haplotype_breaks <- integer()
 
 # now, update the list using for loop
 for (line in merged.data$match){
-  allele = line
+  match_value = line
   #print(allele)
-  if (previous_allele == allele){
+  if (previous_match == match_value){
     hap_size = hap_size + 1}
-  else if (previous_allele != allele){
-    haplotype_size <- c(haplotype_size, hap_size)
+  else if (previous_match != match_value){
+    haplotype_sizes <- c(haplotype_sizes, hap_size) # add that hap_size to the list
     #print(previous_allele)
     #print(hap_size)
     #print(haplotype_size)
-    # reset the haplotype size
-    hap_size <- 1}
-  previous_allele <- allele
+    hap_size <- 1}  # reset the haplotype size
+  previous_match <- match_value
 }
 
+for (ith in c(1:seq_len)){
+  current_match = merged.data$match[ith]
+  current_pi = merged.data$phased.NA12891.PI[ith]
+  if (previous_match == current_match & previous_pi == current_pi){
+    hap_size = hap_size + 1}
+  else if (previous_match != current_match | previous_pi != current_pi){
+    haplotype_sizes <- c(haplotype_sizes, hap_size)
+    hap_size <- 1}  # reset the haplotype size to 1
+  
+  # find the position when haplotype breaks
+  if (previous_pi != current_pi){
+    haplotype_breaks <- c(haplotype_breaks, merged.data$POS[ith])}
+  
+  # update the previous match and pi values for next for-loop 
+  previous_match = current_match
+  previous_pi = current_pi
+}
+
+
+
+
+## Just printing 
 hap_size
-haplotype_size
-print(haplotype_size)
-typeof(haplotype_size)
+print(haplotype_sizes)
+typeof(haplotype_sizes)
+length(haplotype_sizes)
+haplotype_breaks
+length(haplotype_breaks)
 
 # for convenience let's convert this haplotype size list into integer array
 haplotype_size_numeric <- as.numeric(unlist(haplotype_size))
