@@ -35,12 +35,11 @@ head(merged.data)
 # set the data in order by "POS" 
 merged.data <- merged.data[order(merged.data$POS),]
 
-# putting the order make the row index number not to be susequent
-# so, update them again
+# after merging the row-index becomes random; so let's put it in order
 rownames(merged.data) <- NULL
 
 # Now, compare the "truth haplotype" with "phased haplotype" and ...
-# ... find the sites with consecutive properly phased haplotype blocks 
+# ... find the sites where haplotype phasing switch 
 merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phased.NA12891.PG_al), 0, 1)
 # **Note: the "match" column should have values "0's" and "1's". A continous "0" or "1" indicates 
 # .. properly phased block. But, transition from 0 -> 1 or from 1 -> 0 suggests a "Switch Error" betweeen the blocks.
@@ -53,8 +52,13 @@ plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic 
 #abline(v=haplotype_breaks, col='red')
 dev.off()
 
-## Compute switch points metrices
-# "switch points" are when :
+
+## The switch point data (i.e "match") and the plot we obtained above doesn't account for break in haplotypes.
+# Since out haplotype aren't completely merged genome/chromosome wide. The switch points needs to be ..
+# .. defined per block. 
+
+## Compute switch points also including changes in "PI" values.
+# Now, the "switch points" include when :
   # we see 0 -> 1, or when 1 -> 0 in the "match" data
   # PI of the haplotype block changes
 
@@ -132,6 +136,28 @@ for (ith in c(1:seq_len)){
   previous_pi = current_pi
 }
 
+## We can now overlay out haplotype breaks position on the top of previous switch points plot
+plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic coordinates with haplotype breaks.", type = "s", 
+     xlab = "genomic position", ylab = "switch errors")
+abline(v=haplotype_breaks, col='red')
+
+
+## Now, make switch points plot after accounting for haplotype breaks. 
+# for that we will create another column with updated matches between truth and phased haplotypes
+#merged.data$match02 <- 
+
+previous_match <- 0
+previous_pi <- 1
+match02 <- integer()
+
+for (ith in c(1:seq_len)){
+  current_match = merged.data$match[ith]
+  current_pi = merged.data$phased.NA12891.PI[ith]
+  if (current_match == previous_match & current_pi == previous_pi){
+    
+  }
+  
+}
 
 
 
