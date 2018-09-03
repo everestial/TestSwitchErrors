@@ -97,7 +97,10 @@ simulated_RBphasedHaplotype_SetA.txt  truth_RBphasedHaplotype_SetA.txt
 $ 
 ```
 
-####<font color="#729FCF"><b>We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**.</b></font>
+<style>p{color:red;}</style>
+<p><em>We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**.</em></p>
+
+
 <br>
 
 **But, before doing any further phase extension let's make another simulated set (i.e `SetB`) of RBphased haplotype using 25 samples. So we can compare how sample size effects phasing quality in phaseExtender.**
