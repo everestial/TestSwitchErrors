@@ -40,14 +40,14 @@ merged.data <- merge(truthHaplotype_NA12891, phased_SetA_NA12891,
                      by=c("CHROM", "POS"))
 head(merged.data)
 
-# set the data in order by "POS" 
+# set the data in order by "POS" - ** it's very important to do this **
 merged.data <- merged.data[order(merged.data$POS),]
 
 # after merging, the row-index becomes random; so let's put it in order
 rownames(merged.data) <- NULL
 
 # Now, compare the "truth haplotype" with "phased haplotype" and ...
-# ... find the sites where haplotype phasing switch 
+# ... find the sites where haplotype phasing switched
 merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phased.NA12891.PG_al), 0, 1)
 # **Note: the "match" column should have values "0's" and "1's". A continous "0" or "1" indicates 
 # .. properly phased block. But, transition from 0 -> 1 or from 1 -> 0 suggests a "Switch Error" betweeen the blocks.
@@ -57,14 +57,31 @@ png("out_match_SetA_phaseExtender.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic coordinates.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
 #title(main = "Switch points", xlab = 'genomic coordinates', ylab = 'switch points')
-#abline(v=haplotype_breaks, col='red')
 dev.off()
 
 
+# Compute switch error rates 
+number_of_hets <- length(merged.data$match)
+num_of_switch <- 0
+prev_match <- merged.data$match[1]
+for (item in merged.data$match){
+  curr_match = item
+  if (curr_match != prev_match){
+    num_of_switch = num_of_switch + 1
+    
+    # reset the "previous match" value
+    prev_match = curr_match}}
+
+switch_err_rate = num_of_switch/(number_of_hets)
+switch_err_rate
+# 0.02048
+
+
+######## Fix the switch points by taking "haplotype breaks" into account. ##########
 ## The above switch point data (i.e "match") and the plot we obtained above doesn't account for break in haplotypes.
 # Since our haplotype aren't completely merged genome/chromosome wide. The switch points needs to be defined per block. 
 
-## So, now we compute switch points also including changes in "PI" values.
+## So, now we compute switch point by including changes in "PI" values.
 # Now, the "switch points" are addressed when :
   # we see 0 -> 1, or when 1 -> 0 in the "match" data
   # PI of the haplotype block changes
@@ -108,7 +125,7 @@ for (ith in c(1:seq_len)){
 ## Identify switch points and compute "switch error" rates. 
 # the total number of haplotype blocks represent frequecy of switch points
 freq_of_switch = length(haplotype_sizes)
-total_possible_switch = sum(haplotype_sizes)
+total_possible_switch = sum(haplotype_sizes) # or number of hets site
 haplotype_sizes
 
 # calculate switch error rate
@@ -130,15 +147,13 @@ for (sizes in haplotype_sizes) {
 ## add data "match02" to the dataframe
 merged.data$match_by_pi <- match_by_pi
 
-## Now, make switch points plot after accounting for haplotype breaks. 
+## Now, make switch points plot by accounting for the haplotype breaks. 
 # for that we will create another column with updated matches between truth and phased haplotypes
-
 plot(merged.data$POS, merged.data$match_by_pi, main = "Switch points over the genomic coordinates with haplotype breaks.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
 
-## We can now overlay out haplotype breaks position on the top of previous switch points plot
+## We can now overlay the haplotype breaks position on the top of switch points plot
 abline(v=haplotype_breaks, col='red')
-
 
 # for convenience let's convert this haplotype size list into integer array
 haplotype_size_numeric <- as.numeric(unlist(haplotype_sizes))
@@ -162,6 +177,20 @@ text(hisHap$mids,hisHap$counts,labels=hisHap$counts, adj=c(0.5, -0.5))
 densHap <- density(haplotype_size_numeric)
 plot(densHap, main = "Density plot of the haplotype size distribution")
 polygon(densHap, col = 'red', border = 'blue')
+
+print("Completed the switch error analyses on first round of phaseExtension on Set-A data.")
+#### Complete analyses on Set-A  #######
+
+
+######### *** Set-A : next recursive round of phaseExtension *** ############
+#### We can see above that we were able to reduce the switch points to 0.0326919.
+# We can however further improve phasing by running phaseExtension on the data recursively.
+# Further phase extension is covered in another tutorial : 
+
+### After recursive phase extension we now further analyse the switch error metrices.
+
+
+
 
 
 
