@@ -13,6 +13,9 @@ This is covered under the tutorial that runs haplotype phasing for sample (NA128
   - We need three types of file: Haps/Sample/Legend
   - geneticMap file is ignored in phaseExtender 
 
+<font color="#729FCF"><b>The language used in this tutorial vary between `python`, `R` and `bash`. The codes are included at each step. However, the associated codes are also made available as separate files.</b></font>
+
+<br>
 ### Step 02: Prepared ReadBackPhased "HAPLOTYPE" file. 
 
 **This is what we will do:**
@@ -34,7 +37,7 @@ This is covered under the tutorial that runs haplotype phasing for sample (NA128
 <br>
 
 ## Now, we begin our phase extension using phaseExtender.
-All, the required files for this tutorial is available at [TestSwitchErrors](https://github.com/everestial/TestSwitchErrors).
+All, the required input files and scripts file for this tutorial is available at [TestSwitchErrors](https://github.com/everestial/TestSwitchErrors).
 
 ### Step 02-A: Prepare HAPLOTYPE data (truth set and simulated set).
 
@@ -46,19 +49,17 @@ NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889
 ```
 ```bash
 #check if required files are there
-$ls
-hapmap3_r2_b36_all.sample
-hapmap3_r2_b36_chr20.haps
-hapmap3_r2_b36_chr20.legend
-makeHapFile.py
+$ ls HapMap3_r2_b36_2009/
+genetic_map_chr20_combined_b36.txt  hapmap3_r2_b36_chr20.haps
+hapmap3_r2_b36_all.sample           hapmap3_r2_b36_chr20.legend
 
-# make directory to store the file for "SetA"
-$mkdir SetA
+# make directory to store the file for simulated "SetA"
+$ mkdir SetA
 ```
 
 ```python
 # now, run the python script 
-$ python3 makeHapFile.py -haps hapmap3_r2_b36_chr20.haps -legend hapmap3_r2_b36_chr20.legend -sample_file hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889 -output_truth SetA/truth_RBphasedHaplotype_SetA.txt -output_sim SetA/simulated_RBphasedHaplotype_SetA.txt
+$ python3 makeHapFile.py -haps HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.haps -legend HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.legend -sample_file HapMap3_r2_b36_2009/hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889 -output_truth SetA/truth_RBphasedHaplotype_SetA.txt -output_sim SetA/simulated_RBphasedHaplotype_SetA.txt
 ```
 
 <pre>
@@ -89,8 +90,11 @@ $ cd SetA
 
 # and you should be able to see both the "truth" and "simulated" haplotype data set.
 ../SetA$ ls
-simulated_RBphasedHaplotype_SetA.txt
-truth_RBphasedHaplotype_SetA.txt
+simulated_RBphasedHaplotype_SetA.txt  truth_RBphasedHaplotype_SetA.txt
+
+# get back to original directory 
+../SetA$ cd ..
+$ 
 ```
 
 ####<font color="#729FCF"><b>We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**.</b></font>
@@ -109,7 +113,7 @@ NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,NA12383,NA12154,
 $ mkdir SetB
 
 # now, run the python script 
-$ python3 makeHapFile.py -haps hapmap3_r2_b36_chr20.haps -legend hapmap3_r2_b36_chr20.legend -sample_file hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,\
+$ python3 makeHapFile.py -haps HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.haps -legend HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.legend -sample_file HapMap3_r2_b36_2009/hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,\
 NA12383,NA12154,NA12749,NA12890,NA12776,NA12827,NA12342,NA11891,\
 NA11920,NA12778,NA12763,NA12399,NA11995,NA12750,NA12875,NA06985,NA12400 -output_truth SetB/truth_RBphasedHaplotype_SetB.txt -output_sim SetB/simulated_RBphasedHaplotype_SetB.txt
 ```
@@ -150,6 +154,8 @@ Writing simulated set haplotype data to a file &quot;SetB/simulated_RBphasedHapl
 
 Process completed !!! :) :) 
 </pre>
+
+#####<font color="#729FCF"><b>We have now completed preparation of RBphased haplotypes. These RBphased data however were not prepare from VCF but are simulated.</b></font>
 
 <br>
 
