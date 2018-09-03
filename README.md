@@ -155,7 +155,7 @@ Writing simulated set haplotype data to a file &quot;SetB/simulated_RBphasedHapl
 Process completed !!! :) :) 
 </pre>
 
-#####<font color="#729FCF"><b>We have now completed preparation of RBphased haplotypes. These RBphased data however were not prepare from VCF but are simulated.</b></font>
+##### <font color="#729FCF"><b>We have now completed preparation of RBphased haplotypes. These RBphased data however were not prepare from VCF but are simulated.</b></font>
 
 <br>
 
