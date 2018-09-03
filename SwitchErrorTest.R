@@ -118,6 +118,7 @@ for (line in merged.data$match){
   previous_match <- match_value
 }
 
+#####
 for (ith in c(1:seq_len)){
   current_match = merged.data$match[ith]
   current_pi = merged.data$phased.NA12891.PI[ith]
@@ -126,6 +127,10 @@ for (ith in c(1:seq_len)){
   else if (previous_match != current_match | previous_pi != current_pi){
     haplotype_sizes <- c(haplotype_sizes, hap_size)
     hap_size <- 1}  # reset the haplotype size to 1
+  
+  else {
+    haplotype_sizes <- c(haplotype_sizes, hap_size)
+    hap_size <- 1}  # reset the haplotype size to 1}
   
   # find the position when haplotype breaks
   if (previous_pi != current_pi){
@@ -146,28 +151,82 @@ abline(v=haplotype_breaks, col='red')
 # for that we will create another column with updated matches between truth and phased haplotypes
 #merged.data$match02 <- 
 
+####3
+begin_match = 0
+begin_pi = 1
+
+for (ith in c(1:seq_len)) {
+  current_pi = merged.data$phased.NA12891.PI[ith]
+  truth_gt = merged.data$true.NA12891.PG_al[ith]
+  phased_gt = merged.data$phased.NA12891.PG_al[ith]
+  
+  
+}
+
+
+####
+
+
+
 previous_match <- 0
 previous_pi <- 1
 match02 <- integer()
+continuing_match <- 0
+
+
 
 for (ith in c(1:seq_len)){
   current_match = merged.data$match[ith]
   current_pi = merged.data$phased.NA12891.PI[ith]
   if (current_match == previous_match & current_pi == previous_pi){
+    match02 <- c(match02, continuing_match)
     
-  }
+    # store data for next for loop
+    previous_match <- current_match}
   
-}
+  else if (current_pi != previous_pi & current_match == previous_match){
+    if (current_match == 0) {continuing_match = 1}
+    else if (current_match == 1) {continuing_match = 0}
+    match02 <- c(match02, continuing_match)
+    previous_match <- current_match}
+  
+  # covers both conditions :
+    # current_match != previous_match & current_pi == previous_pi 
+    # current_match != previous_match & current_pi != previous_pi
+  else {
+    continuing_match <- current_match
+    match02 <- c(match02, continuing_match)
+    previous_match <- current_match}
+  
+  # update the values
+  previous_pi <- current_pi}
 
+match02
+length(match)
+length(match02)
 
 
 ## Just printing 
-hap_size
 print(haplotype_sizes)
 typeof(haplotype_sizes)
 length(haplotype_sizes)
+sum(haplotype_sizes)
 haplotype_breaks
 length(haplotype_breaks)
+length(merged.data$match)
+
+## add data "match02" to the dataframe
+merged.data$match02 <- match02
+
+
+## now, compute haplotype sizes
+
+
+
+
+
+
+
 
 # for convenience let's convert this haplotype size list into integer array
 haplotype_size_numeric <- as.numeric(unlist(haplotype_size))
