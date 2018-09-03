@@ -122,17 +122,17 @@ for (line in merged.data$match){
 for (ith in c(1:seq_len)){
   current_match = merged.data$match[ith]
   current_pi = merged.data$phased.NA12891.PI[ith]
-  if (previous_match == current_match & previous_pi == current_pi){
+  if (previous_match == current_match & previous_pi == current_pi) {
     hap_size = hap_size + 1}
-  else if (previous_match != current_match | previous_pi != current_pi){
+  else if (previous_match != current_match | previous_pi != current_pi) {
     haplotype_sizes <- c(haplotype_sizes, hap_size)
     hap_size <- 1}  # reset the haplotype size to 1
   
-  else {
-    haplotype_sizes <- c(haplotype_sizes, hap_size)
-    hap_size <- 1}  # reset the haplotype size to 1}
+  # store the last haplotype size when for loop ends
+  if (ith == seq_len){
+    haplotype_sizes <- c(haplotype_sizes, hap_size)}
   
-  # find the position when haplotype breaks
+  # find the position where haplotype breaks occur 
   if (previous_pi != current_pi){
     haplotype_breaks <- c(haplotype_breaks, merged.data$POS[ith])}
   
