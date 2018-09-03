@@ -97,9 +97,7 @@ simulated_RBphasedHaplotype_SetA.txt  truth_RBphasedHaplotype_SetA.txt
 $ 
 ```
 
-<style>p{color:red;}</style>
-<p><em>We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**.</em></p>
-
+####<font color="#729FCF"><b>We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**.</b></font>
 
 <br>
 
