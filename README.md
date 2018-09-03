@@ -1,14 +1,15 @@
 
-###This file is used for testing switcherror while doing haplotype phasing using PhaseExtender.
+### This file is used for testing switcherror while doing haplotype phasing using PhaseExtender.
+##### Note: Parts of this tutorial can also be used as a method for running initial phaseExtension (and then recursive phaseExtension) with ReadBackPhased data.
 
-### Goal of the tutorial:
+### General goal of the tutorial:
 Infer haplotype of the HapMap Sample (NA12891 from b36) using **phaseExtender** and test the phase quality using switcherror metrices. The phasing quality is then compared to phasing reported by **ShapeIT**.
 
 
 ### Step 01: Check metrices of the inputfiles. 
 This is covered under the tutorial that runs haplotype phasing for sample (NA12891) using **ShapeIT**.
 
-**Required files:** Same files used with "ShapeIT".
+**Required files:** Same files used with "ShapeIT". The zipped file is available as [HapMap3_r2_b36_2009.zip](https://github.com/everestial/TestSwitchErrors/blob/master/HapMap3_r2_b36_2009.zip)
   - We need three types of file: Haps/Sample/Legend
   - geneticMap file is ignored in phaseExtender 
 
@@ -17,23 +18,23 @@ This is covered under the tutorial that runs haplotype phasing for sample (NA128
 **This is what we will do:**
   - **2)** create HAPLOTYPE file compatible with **phaseExtender** 
   **Note:** Unlike **ShapeIT** **phaseExtender** takes haplotype as IUPAC base.
-    - first we select 9 (SetA) and then 24 (SetB) random samples from CEU population. In addition to this random samples we will include sample (NA12891). So, we will have two sets
-    - we will then convert haplotype for these samples into HAPLOTYPE file. This original HAPLOTYPE file is stored as "truth set". 
+    - first we select 9 random samples (SetA) and then 24 random samples (SetB) from CEU population. In addition to this random samples we will include sample (NA12891) making the final SetA at 10 samples and SetB at 25 samples.
+    - we will then convert haplotype for these samples into HAPLOTYPE file. The original HAPLOTYPE file for all the samples is stored as "truth set". 
     - We will then take this truth set and create a simulated ReadBackPhased HAPLOTYPE file (required by phaseExtender) for all the samples.
     
-    **Note:** We will use small python application called **`makeHapFile.py`** which will cover all the above steps. 
-    The number of ReadBackPhased heterozygote variants in the ReadBackphased blocks is simulated to follow a poisson like distribution (not exactly possion but has a right skew). The mean number of RBphased variants is picked randomly at (5, 6, or 7) with min number of variants at 3 and maximum at 30. The simulation creates a distribution that is likely observed in real RBphased haplotype data.
+    <font color="#729FCF"><b>**Note:** We will use small python application called **`makeHapFile.py`** which will cover all the above steps. This file is provided along with this turorial.</b></font>
+        In the simulated data the number of ReadBackPhased heterozygote variants in the ReadBackphased blocks is simulated to follow a poisson like distribution (not exactly possion but has a right skew). The mean number of RBphased variants is picked randomly at (5, 6, or 7) with min number of variants at 3 and maximum at 30. The simulation creates a distribution that is likely observed in real RBphased haplotype data. 
+<br>
+  - **3)** The simulated ReadBackPhased HAPLOTYPE file is then used with **phaseExtender** to improve phasing. <font color="#729FCF"><b>**Note:** Unlike in **ShapeIT** method, with **phaseExtender** we improve the phasing for all the samples.</b></font>
+    - **In this tutorial we will then compare the phasing quality only for sample (NA12891).**
 
-  - **3)** The simulated ReadBackPhased HAPLOTYPE file is then used with **phaseExtender** to improve phasing. **Note:** Unlike in **ShapeIT** method, with **phaseExtender** we improve the phasing for all the samples.
-    - **Then we will compare the phasing quality for sample (NA12891).**
-
-  - **4)** Then we will join the output haplotype for each sample to run another round of phase extension.
-  - **5)** This way we can recursively apply haplotype phase improvements until optimal results are obtained.
+  - **4)** Then we will join the output haplotype for each samples to a single file. This file will be used to run another round of phase extension.
+    - This way we can recursively apply haplotype phase improvements until optimal results are obtained.
 
 <br>
 
 ## Now, we begin our phase extension using phaseExtender.
-All, the required files for this tutorial is available at ... ???
+All, the required files for this tutorial is available at [TestSwitchErrors](https://github.com/everestial/TestSwitchErrors).
 
 ### Step 02-A: Prepare HAPLOTYPE data (truth set and simulated set).
 
