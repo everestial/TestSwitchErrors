@@ -1,13 +1,8 @@
+### This tutorial is used for doing haplotype phasing using [PhaseExtender](https://github.com/everestial/phase-Extender). It also compares the phase quality of the haplotype produced against haplotype produced by ShapeIT.
+##### Note: Parts of this tutorial can also be used as a method for doing recursive phaseExtension with ReadBackPhased data (Starting from Step 03).
 
-### This file is used for testing switcherror while doing haplotype phasing using PhaseExtender.
-##### Note: Parts of this tutorial can also be used as a method for running initial phaseExtension (and then recursive phaseExtension) with ReadBackPhased data.
-
-### General goal of the tutorial:
-Infer haplotype of the HapMap Sample (NA12891 from b36) using **phaseExtender** and test the phase quality using switcherror metrices. The phasing quality is then compared to phasing reported by **ShapeIT**.
-
-
-### Step 01: Check metrices of the inputfiles. 
-This is covered under the tutorial that runs haplotype phasing for sample (NA12891) using **ShapeIT**.
+### Specific goal of the tutorial:
+Infer haplotype of the HapMap Sample (NA12891 from b36) using **phaseExtender** and test the phase quality using switcherror metrices. The reported phased haplotype from several several **phaseExtender** runs is then compared to phased haplotype reported by **ShapeIT**.
 
 **Required files:** Same files used with "ShapeIT". The zipped file is available as [HapMap3_r2_b36_2009.zip](https://github.com/everestial/TestSwitchErrors/blob/master/HapMap3_r2_b36_2009.zip)
   - We need three types of file: Haps/Sample/Legend
@@ -16,13 +11,19 @@ This is covered under the tutorial that runs haplotype phasing for sample (NA128
 <font color="#729FCF"><b>The language used in this tutorial vary between `python`, `R` and `bash`. The codes are included at each step. However, the associated codes are also made available as separate files.</b></font>
 
 <br>
-### Step 02: Prepared ReadBackPhased "HAPLOTYPE" file. 
+
+### Step 01: Check metrices of the inputfiles. 
+This is covered under the tutorial that runs haplotype phasing for sample (NA12891) using **ShapeIT**.
+
+
+<br>
+### Step 02: Prepare ReadBackPhased "HAPLOTYPE" file. 
 
 **This is what we will do:**
   - **2)** create HAPLOTYPE file compatible with **phaseExtender** 
   **Note:** Unlike **ShapeIT** **phaseExtender** takes haplotype as IUPAC base.
     - first we select 9 random samples (SetA) and then 24 random samples (SetB) from CEU population. In addition to this random samples we will include sample (NA12891) making the final SetA at 10 samples and SetB at 25 samples.
-    - we will then convert haplotype for these samples into HAPLOTYPE file. The original HAPLOTYPE file for all the samples is stored as "truth set". 
+    - we will then convert haplotype for these samples into HAPLOTYPE file in IUPAC base format. The original HAPLOTYPE file for all the samples is then stored as "truth set". 
     - We will then take this truth set and create a simulated ReadBackPhased HAPLOTYPE file (required by phaseExtender) for all the samples.
     
     <font color="#729FCF"><b>**Note:** We will use small python application called **`makeHapFile.py`** which will cover all the above steps. This file is provided along with this turorial.</b></font>
@@ -422,7 +423,7 @@ $ ./PhaseExtenderOnForLoop_SetB.sh
 ```
 **which will:**
   - run phase extension on all 25 samples inside **SetA**.
-  - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB_run02**.
+  - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB02**.
 
 ```BASH
 # Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetB_run02.txt"
