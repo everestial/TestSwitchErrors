@@ -636,17 +636,35 @@ plot(densHap, main = "Density plot of the haplotype size distribution")
 polygon(densHap, col = 'red', border = 'blue')
 ```
 
-![HistogramHapSizeDist.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/HistogramHapSizeDist.png)
-
-![DensityPlot.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/DensityPlot.png)
-
-
+Histogram plot             |  Density plot
+:-------------------------:|:-------------------------:
+![HistogramHapSizeDist.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/HistogramHapSizeDist.png)  |  ![DensityPlot.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/DensityPlot.png)
 
 
 ```R
 print("Completed the switch error analyses on first round of phaseExtension on Set-A data.")
 #### Complete analyses on Set-A  #######
 ```
+<br>
+
+### Step 04: Second recursive run of haplotype phasing 
+The haplotype in **SetA_02** are still not a global haplotype but rather larger blocks produced by joining smaller blocks. 
+
+You can compare the haplotype distribution (sample "NA12891") of initial vs. final haplotype size distribution after first run. This plots are in the folder "../SetA/phased_NA12891_SetA_run01"
+
+
+Haplotype size distribution before phaseExtension            |  Haplotype size distribution after phaseExtension
+:-------------------------:|:-------------------------:
+![hap_size_byVar_NA12891_initial.png](./SetA/phased_NA12891_SetA_run01/hap_size_byVar_NA12891_initial.png)  |  ![hap_size_byVar_NA12891_final.png](./SetA/phased_NA12891_SetA_run01/hap_size_byVar_NA12891_final.png)
+
+
+
+Now, we take the phased haplotype from (SetA02) and run further phaseExtension to 
+
+
+
+
+
 
 <br>
 ## 03 - Set (B) : for HAPLOTYPE file with 25 samples.
@@ -672,10 +690,6 @@ make bashscrpt for "forlooponBashSetB.sh"
 
 
 
-### Step 04: Second recursive run of haplotype phasing 
-
-
-
 
 ## Add all the steps for "SetB" in here .....
 
@@ -685,6 +699,13 @@ make bashscrpt for "forlooponBashSetB.sh"
 
 # finally compare the "SetA" against "SetB".
 **conclusion** - yes the sample size improves phasing but with phaseExtender you are able to get good quality phasing even with sample size as small as 10. 
+
+*** to add ***
+N50 for the truth set, phased set01, set02, 03.
+switchError per mb
+phasedSet of sample NA12878.
+
+
 
 
 
