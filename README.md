@@ -29,6 +29,7 @@ This is covered under the tutorial that runs haplotype phasing for sample (NA128
     <font color="#729FCF"><b>**Note:** We will use small python application called **`makeHapFile.py`** which will cover all the above steps. This file is provided along with this turorial.</b></font>
         In the simulated data the number of ReadBackPhased heterozygote variants in the ReadBackphased blocks is simulated to follow a poisson like distribution (not exactly possion but has a right skew). The mean number of RBphased variants is picked randomly at (5, 6, or 7) with min number of variants at 3 and maximum at 30. The simulation creates a distribution that is likely observed in real RBphased haplotype data. 
 <br>
+
   - **3)** The simulated ReadBackPhased HAPLOTYPE file is then used with **phaseExtender** to improve phasing. <font color="#729FCF"><b>**Note:** Unlike in **ShapeIT** method which runs haplotype phasing of 1 sample, with **phaseExtender** we improve the phasing for all the samples.</b></font>
     - **But, in this tutorial we will then compare the phasing quality only for sample (NA12891).**
 
