@@ -648,18 +648,68 @@ print("Completed the switch error analyses on first round of phaseExtension on S
 <br>
 
 ### Step 04: Second recursive run of haplotype phasing 
-The haplotype in **SetA_02** are still not a global haplotype but rather larger blocks produced by joining smaller blocks. 
+The haplotype in **SetA_02** are still not a global haplotype but rather larger blocks produced by joining smaller blocks. You can compare the haplotype size distribution (of sample "NA12891") before vs. after the first run. **This plots are available in the folder "../SetA/phased_NA12891_SetA_run01"**
 
-You can compare the haplotype distribution (sample "NA12891") of initial vs. final haplotype size distribution after first run. This plots are in the folder "../SetA/phased_NA12891_SetA_run01"
-
+**Haplotype size distribution by number of variants.**
 
 Haplotype size distribution before phaseExtension            |  Haplotype size distribution after phaseExtension
 :-------------------------:|:-------------------------:
 ![hap_size_byVar_NA12891_initial.png](./SetA/phased_NA12891_SetA_run01/hap_size_byVar_NA12891_initial.png)  |  ![hap_size_byVar_NA12891_final.png](./SetA/phased_NA12891_SetA_run01/hap_size_byVar_NA12891_final.png)
 
+<br>
+
+**Haplotype size distribution by genomic distance.**
+
+Haplotype size distribution before phaseExtension               |  Haplotype size distribution after phaseExtension  
+:-------------------------:|:-------------------------:
+![hap_size_byGenomicRange_NA12891_initial.png](./SetA/phased_NA12891_SetA_run01/hap_size_byGenomicRange_NA12891_initial.png)  |  ![hap_size_byGenomicRange_NA12891_final.png](./SetA/phased_NA12891_SetA_run01/hap_size_byGenomicRange_NA12891_final.png)
 
 
-Now, we take the phased haplotype from (SetA02) and run further phaseExtension to 
+So, to make a global phased haplotype we will go through another round of phase extension. We can run the phase extension recursively until you desire. **To control for how the phase extension proceeds, "phaseExtender" provide control over several parameters.**
+  - "numHets" : the maximum number of heterozygous that will be used to compute LODS score between blocks. 
+    - The larger the numHets the larger is the computed LODS score. But, there is a limit to it. The LODS will decrease if the blocks being joined are very large and the ends of the two joining blocks are at LD of about 50. 
+    - To account for this problem "phaseExtender" starts computation by running markov chains between the SNPs that are closest betweent the two consecutive blocks. So, it will help to keep low "numHets" as recurssion progresses.
+  - "lods" : the lods cutoff threshold. 
+    - I suggest using large cutoff at the beginning and proceed to low cutoff as the recursion progresses.
+  - "culLH" : the likelihoods of the lods can be either max summed or max-producted.
+  - "snpTh" : minimum number of SNPs required in a block so it can be phase extended.
+    - the default value is at "3". I suggest using higher snpTh as the beginning but decreasing it as recurssion progresses.
+<br>
+
+**I plan on doing only one more round of phaseExtension. So, I will keep the several parameters low (`numHets 40`, `lods 1`), so a few but large haplotype blocks can be prepared.**
+
+The codes used in this round of phase extension is provided as `BASH SHELL` script file **"PhaseExtenderOnForLoop_SetA_02.sh"**. 
+
+**To run the file :**
+```bash
+# simply do
+../SwitchErrorTutorial$ ./PhaseExtenderOnForLoop_SetA_02.sh
+```
+**and it will automatically run the following process :**
+  - **a)** run phaseExtension on a for-loop which will produce output for each sample as "SampleNamme_run02" 
+  - **b)** merge the haplotype output for each sample in new directory **(SetA_03)**
+  - **c)** copy the merged haplotype as a new file **"phaseExtendedHaplotype_SetA_03.txt"**
+  - **d)** and extract the phased haplotype set for sample "NA12891" as file named **"phased_Haplotype_NA12891.txt"**.
+
+
+Compare the phased haplotype agains the truth set:
+
+All the process is similar to what we did earlier (when we compared truth set against the phased SetA.) Now, we compare truth against phased SetA02
+
+continue....
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
