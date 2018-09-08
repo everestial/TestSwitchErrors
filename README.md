@@ -99,7 +99,8 @@ simulated_RBphasedHaplotype_SetA.txt  truth_RBphasedHaplotype_SetA.txt
 ../SwitchErrorTutorial$ cd ..
 ```
 
-#### <font color="#729FCF"><b>We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**.</b></font>
+#### <font color="#729FCF"><b>We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**. 
+This simulated set may not be exactly the same because the RBphased haplotype are generated with some randomness. If you want to use the same exact simulated data you can copy and replace the generated simulation file. i.e "simulated_RBphasedHaplotype_SetA.txt".</b></font>
 <br>
 
 **But, before doing any further phase extension let's make another simulated set (i.e `SetB`) of RBphased haplotype using 25 samples. So we can compare how sample size effects phasing quality in phaseExtender.**
@@ -157,7 +158,8 @@ Writing simulated set haplotype data to a file &quot;SetB/simulated_RBphasedHapl
 Process completed !!! :) :) 
 </pre>
 
-#####<font color="#729FCF"><b>We have now completed preparation of RBphased haplotypes. These RBphased data however were not prepare from VCF but are simulated.</b></font>
+#####<font color="#729FCF"><b>We have now completed preparation of RBphased haplotypes. Keep in mind though that these RBphased data are not prepare from VCF but are simulated. 
+Also, the simulated data for Set B may not be exact to the one used in this tutorial.</b></font>
 
 <br>
 
@@ -177,13 +179,13 @@ Process completed !!! :) :)
 ```bash
 # We will use a prepared "BASH" shell script to run phasing on all the samples (on for-loop).
 # Let's test the SHELL that is active on the background
-$ echo $0
+../SwitchErrorTutorial$ echo $0
 bash
 ```
 
-**We use the below bash script to :**
+**We use the bash script given below to :**
   - run **phaseExtender** on all the samples.
-    - the output of each sample will be in a different folder with several haplotype based metrics.
+    - the output of each sample will be in a different folder with several haplotype related metrics.
     - we can consider the phased haplotype of each sample as a final phase. Or, we can join the phased haplotype of each sample and further improve haplotype by re-running phasing recursively.
   - We will join the output haplotype of each sample into a new HAPLOTYPE file.
     - This file will then be used for another round of phaseExtender. 
@@ -194,12 +196,11 @@ bash
 
 ## Run phaseExtension on all the samples using "for loop" 
 
-# set the path for phaseExtender.py file. 
-# **update your path as need be**
+# set the path for "phaseExtender.py" file ; **note: Update path as need be.
 phaseEXT=~priyanka/phase-Extender2018/phase-Extender.py
 
-# create empty file to store the path of each output haplotype
-echo > files_to_merge_SetA_run01.txt
+# create empty file to store the output path for each run
+echo > files_to_merge_setA_run01.txt
 
 for item in NA12891 NA12892 NA06989 NA10850 NA06984 NA07056 NA12045 NA11843 NA12890 NA12889
 do
@@ -208,8 +209,9 @@ do
 
   # also write the path of the output directory for each sample
   # so, they can be merged later 
-  echo "SetA/phased_${item}_SetA_run01/extended_haplotype_${item}.txt" >> files_to_merge_SetA_run01.txt
+  echo "SetA/phased_${item}_SetA_run01/extended_haplotype_${item}.txt" >> files_to_merge_setA_run01.txt
 done
+
 ```
 <br>
 
@@ -291,14 +293,19 @@ End :)
 
 #### Now, merge all the haplotypes together 
 ```bash
+
 # remove the first empty line from the file that store path to the extended haplotype for each sample 
 echo "$(tail -n +2 files_to_merge_setA_run01.txt)" > files_to_merge_setA_run01.txt
 
-# set the path for "merge_haplotypePandas.py" from phaseExtender application; **note: Update path as need be.
+
+# set the path for "merge_haplotypePandas.py" file ; **note: Update path as need be.
 mergeHAP=~priyanka/phase-Extender2018/merge_haplotypePandas.py
 
+
 # use, a python script to merge the haplotypes together
-python3 ${mergeHAP} --hapList files_to_merge_setA_run01.txt --output SetA02
+# we store the file in a new directory "SetA_02"
+mkdir SetA_02
+python3 ${mergeHAP} --hapList files_to_merge_setA_run01.txt --output SetA_02
 ```
 #### <font color="#729FCF"><b>**Terminal Output:**</b></font>
 
@@ -376,40 +383,269 @@ Global maximum memory usage: 95.10 (mb)
 elapsed time:  1.6246700286865234
 </pre>
 
-After running above code, the output directory `SetA_run02` will include a file named "merged_haplotype.txt". **This file is comparable to the file we started with (i.e "simulated_RBphasedHaplotype_SetA.txt") but has larger and improved haplotype blocks.**
+After running above code, the output directory `SetA_02` will include a file named "merged_haplotype.txt". **This file is comparable to the file we started with (i.e "simulated_RBphasedHaplotype_SetA.txt") but has larger and improved haplotype blocks.**
 
 ```BASH
 # Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetA02.txt"
-$ cp SetA02/merged_haplotype.txt SetA02/phaseExtendedHaplotype_SetA02.txt
+../SwitchErrorTutorial$ cp SetA_02/merged_haplotype.txt SetA_02/phaseExtendedHaplotype_SetA_02.txt
 ```
+<br>
+**Note:** All the above process (from running haplotype phaseExtension to merging individual haplotype for each sample) that is run on the `BASH SHELL` is made available as bash script file **"PhaseExtenderOnForLoopSetA.sh"**. This file includes code for **a)** running phaseExtension on a for-loop **b)** merging the haplotype output for each sample **c)** copying the merged haplotype as a new file.
 
-**Note:** A `BASH SHELL` script is available as file "PhaseExtenderOnForLoopSetA.sh" in this tutorial. This script includes code to run phaseExtension on a for-loop and also to merge the haplotype output for each sample.
+**To run the file :**
 ```bash
 # simply do
-$ ./PhaseExtenderOnForLoopSetA.sh
+../SwitchErrorTutorial$ ./PhaseExtenderOnForLoopSetA.sh
 ```
-## Let's test the number of switch errors
-To do this we compare the **truth haplotype for setA (i.e `"SetA/truth_RBphasedHaplotype_SetA.txt"`)** with the **output file (i.e `"SetA_run02/phaseExtendedHaplotype_SetA_run02.txt"`)**.
+<br>
+
+## Now, check the quality of the phased data
+To do this we compare the **truth haplotype for setA (i.e `"SetA/truth_RBphasedHaplotype_SetA.txt"`)** with the **output file (i.e `"SetA_run02/phaseExtendedHaplotype_SetA_02.txt"`)**. But, here we only compare the haplotype of sample "NA12891".
 
 ```bash
-## Extracting truth haplotype set for Sample "NA12891"
-$ head -n1 SetA/truth_RBphasedHaplotype_SetA.txt 
+## Extract truth haplotype set for Sample "NA12891"
+../SwitchErrorTutorial$ head -n1 SetA/truth_RBphasedHaplotype_SetA.txt 
 CHROM	POS	REF	all-alleles	NA06989:PI	NA06989:PG_al	NA10850:PI	NA10850:PG_al	NA06984:PI	NA06984:PG_al	NA07056:PI	NA07056:PG_al	NA12045:PI	NA12045:PG_al	NA11843:PI	NA11843:PG_al	NA12890:PI	NA12890:PG_al	NA12889:PI	NA12889:PG_al	NA12892:PI	NA12892:PG_al	NA12891:PI	NA12891:PG_al
 
 # the index position of the haplotype for sample "NA12891" is 23 and 24.
 # we extract the this column but also remove the rows that are empty i.e "."
 # we also include the data from "CHROM" and "POS". This is used so we can make sure that the genotypes are coming from the same genomic position
-$ awk 'BEGIN{FS=OFS="\t"} {if ($24 !=".") print $1, $2, $23, $24}' SetA/truth_RBphasedHaplotype_SetA.txt > SetA/truth_Haplotype_NA12891.txt
+../SwitchErrorTutorial$ awk 'BEGIN{FS=OFS="\t"} {if ($24 !=".") print $1, $2, $23, $24}' SetA/truth_RBphasedHaplotype_SetA.txt > SetA/truth_Haplotype_NA12891.txt
 
 ## Now, extract the phased haplotype for Sample "NA12891"
-$ head -n1 SetA_run02/phaseExtendedHaplotype_SetA_run02.txt 
+../SwitchErrorTutorial$ head -n1 SetA_02/phaseExtendedHaplotype_SetA_02.txt 
 CHROM	POS	REF	all-alleles	all-freq	NA12891:PI	NA12891:PG_al	NA12892:PI	NA12892:PG_al	NA06989:PI	NA06989:PG_al	NA10850:PI	NA10850:PG_al	NA06984:PI	NA06984:PG_al	NA07056:PI	NA07056:PG_al	NA12045:PI	NA12045:PG_al	NA11843:PI	NA11843:PG_al	NA12890:PI	NA12890:PG_al	NA12889:PI	NA12889:PG_al
 
 # here the index position of the haplotype for sample "NA12891" is 6 and 7
-$ awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' SetA02/phaseExtendedHaplotype_SetA02.txt > SetA02/phased_Haplotype_NA12891.txt
+../SwitchErrorTutorial$ awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' SetA_02/phaseExtendedHaplotype_SetA_02.txt > SetA_02/phased_Haplotype_NA12891.txt
+```
+<br>
+
+#### Now, we import the truth and phased data into `R` to plot and quantify switch-errors.
+
+```R
+## Purpose of the this script: 
+  # Compute the switch points using the truth and phased haplotype (obtained from phaseExtender)
+  # Here we use 10 RBphased samples used in Set A.
+  # We do two rounds of RBphasing and phase comparison.
+
+### Set the required path; 
+## **update the path as need be with your directory 
+getwd()
+setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
+getwd()
+list.files()  # read available files and folders 
+
+
+##########  Switch errors test - Set A (first round of phaseExtension) ########## 
+#####  Read the required data  ###### 
+
+## Import "truth haplotype" for SetA
+truthHaplotype_NA12891 <- read.table('SetA/truth_Haplotype_NA12891.txt', header = TRUE)
+head(truthHaplotype_NA12891)
+  #**Note: R doesn't allow to use ":" in header name and it is automatically renamed to "."
+  # you can see this in the output 
+
+# change the name of the header
+colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PI"] <- "true.NA12891.PI"
+colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PG_al"] <- "true.NA12891.PG_al"
+
+
+## Import "phased haplotype" for SetA
+phased_SetA_NA12891 <- read.table('SetA_02/phased_Haplotype_NA12891.txt', header = TRUE)
+head(phased_SetA_NA12891)
+
+# change the name of the header
+colnames(phased_SetA_NA12891)[colnames(phased_SetA_NA12891)=="NA12891.PI"] <- "phased.NA12891.PI"
+colnames(phased_SetA_NA12891)[colnames(phased_SetA_NA12891)=="NA12891.PG_al"] <- "phased.NA12891.PG_al"
+```
+<br>
+
+**Now, we merge the two data (truth and phased)**
+```R
+## Merge the truth and phased data set to identify switch errors
+merged.data <- merge(truthHaplotype_NA12891, phased_SetA_NA12891,
+                     by=c("CHROM", "POS"))
+head(merged.data)
+
+# set the data in order by "POS" - ** it's very important to do this **
+merged.data <- merged.data[order(merged.data$POS),]
+
+# after merging, the row-index becomes random; so let's put it in order
+rownames(merged.data) <- NULL
+
+# Now, compare the "truth haplotype" with "phased haplotype" and ...
+# ... find the sites where haplotype phasing switched
+merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phased.NA12891.PG_al), 0, 1)
+# **Note: the "match" column should have values "0's" and "1's". A continous "0" or "1" indicates 
+# .. properly phased block. But, transition from 0 -> 1 or from 1 -> 0 suggests a "Switch Error" betweeen the blocks.
+```
+<br>
+
+**Now, plot the data**:
+```R
+# Now, plot the "Switch Error" points as png
+png("out_match_SetA_phaseExtender.png", width = 1600, height = 600)
+plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic coordinates.", type = "s", 
+     xlab = "genomic position", ylab = "switch errors")
+#title(main = "Switch points", xlab = 'genomic coordinates', ylab = 'switch points')
+dev.off()
+```
+![out_match_SetA_phaseExtender.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/out_match_SetA_phaseExtender.png)
+<br>
+
+**Now, let's compute the switch error rates**
+```R
+# Compute switch error rates 
+number_of_hets <- length(merged.data$match)
+num_of_switch <- 0
+prev_match <- merged.data$match[1]
+for (item in merged.data$match){
+  curr_match = item
+  if (curr_match != prev_match){
+    num_of_switch = num_of_switch + 1
+    
+    # reset the "previous match" value
+    prev_match = curr_match}}
+
+switch_err_rate = num_of_switch/(number_of_hets)
+switch_err_rate
+# 0.02048
+```
+<br>
+
+**But, the above switch error calculation doesn't take haplotype breaks into account. Remember our haplotype isn't phased genome wide, but smaller haplotypes are merged to make a larger one.**
+
+```R
+######## Fix the switch points by taking "haplotype breaks" into account. ##########
+## The above switch point data (i.e "match") and the plot we obtained above doesn't account for break in haplotypes.
+# Since our haplotype aren't completely merged genome/chromosome wide. The switch points needs to be defined per block. 
+
+## So, now we compute switch point by including changes in "PI" values.
+# Now, the "switch points" are addressed when :
+  # we see 0 -> 1, or when 1 -> 0 in the "match" data
+  # PI of the haplotype block changes
+    # ** So, now we need to account for the match and also for change in haplotype block index.
+
+# the length (number of rows) of the dataframe
+seq_len <- length(merged.data$match)
+seq_len
+
+# set empty variables 
+previous_match <- 0
+hap_size <- 0
+haplotype_sizes <- integer()  # to store the size of haplotype extended truly.
+previous_pi <- 1 
+haplotype_breaks <- integer()
+
+# run a for loop to find switch points 
+for (ith in c(1:seq_len)){
+  current_match = merged.data$match[ith]
+  current_pi = merged.data$phased.NA12891.PI[ith]
+  if (previous_match == current_match & previous_pi == current_pi) {
+    hap_size = hap_size + 1}
+  else if (previous_match != current_match | previous_pi != current_pi) {
+    # store the haplotype size of properly phased (extended) block
+    haplotype_sizes <- c(haplotype_sizes, hap_size)
+    hap_size <- 1}  # reset the haplotype size to 1
+  
+  # store the last haplotype size when the for loop reaches the end
+  if (ith == seq_len){
+    haplotype_sizes <- c(haplotype_sizes, hap_size)}
+  
+  # also find the genomic positions where haplotype breaks occur 
+  if (previous_pi != current_pi){
+    haplotype_breaks <- c(haplotype_breaks, merged.data$POS[ith])}
+  
+  # update the previous match and pi values for next for-loop 
+  previous_match = current_match
+  previous_pi = current_pi }
+
+
+## Identify switch points and compute "switch error" rates. 
+# the total number of haplotype blocks represent frequecy of switch points
+freq_of_switch = length(haplotype_sizes)
+total_possible_switch = sum(haplotype_sizes) # or number of hets site
+haplotype_sizes
+
+# calculate switch error rate
+switch_error_rate = (freq_of_switch/total_possible_switch)
+switch_error_rate
+# [1] 0.03269191
+```
+<br>
+
+**Let's add above data as another column**
+```R
+## Now, add another column that represent the fully accounted haplotype switchpoints.
+phase_state = 0
+match_by_pi <- integer()
+for (sizes in haplotype_sizes) {
+  match_by_pi <- c(match_by_pi, rep(phase_state, sizes))
+  
+  # change the phase state for next loop
+  if (phase_state == 0){
+    phase_state = 1}
+  else if (phase_state == 1){
+    phase_state = 0} }
+
+## add data "match02" to the dataframe
+merged.data$match_by_pi <- match_by_pi
+
+## Now, make switch points plot by accounting for the haplotype breaks. 
+# for that we will create another column with updated matches between truth and phased haplotypes
+plot(merged.data$POS, merged.data$match_by_pi, main = "Switch points over the genomic coordinates with haplotype breaks.", type = "s", 
+     xlab = "genomic position", ylab = "switch errors")
 ```
 
-#### Now, we import the truth and phased data into `R` to plot and quantify switch-errors
+![SwitchErrorAfterAccountingHaplotypeBreaks.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/SwitchErrorAfterAccountingHaplotypeBreaks.png)
+
+
+```R
+## We can now overlay the haplotype breaks position on the top of switch points plot
+abline(v=haplotype_breaks, col='red')
+```
+
+![SwitchPointsAfterAccountingHapBreakswithOverlay.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/SwitchPointsAfterAccountingHapBreakswithOverlay.png)
+
+
+**Make histogram and density plot** 
+```R
+# for convenience let's convert this haplotype size list into integer array
+haplotype_size_numeric <- as.numeric(unlist(haplotype_sizes))
+haplotype_size_numeric
+
+## Let's plot a histogram of the haplotype size distribution 
+hisHap <- hist(haplotype_size_numeric)  # general histogram metrics for the data 
+hist(haplotype_size_numeric, 
+     main="Histogram for Haplotype size distribution", 
+     xlab="haplotype size", 
+     border="blue", 
+     col="green",
+     xlim=c(0,200),
+     ylim = c(0,320),
+     las=1, 
+     breaks=20)
+# add the size of the frequency to the histogram plot 
+text(hisHap$mids,hisHap$counts,labels=hisHap$counts, adj=c(0.5, -0.5))
+
+## Density plot
+densHap <- density(haplotype_size_numeric)
+plot(densHap, main = "Density plot of the haplotype size distribution")
+polygon(densHap, col = 'red', border = 'blue')
+```
+
+![HistogramHapSizeDist.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/HistogramHapSizeDist.png)
+
+![DensityPlot.png](/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial/DensityPlot.png)
+
+
+
+
+```R
+print("Completed the switch error analyses on first round of phaseExtension on Set-A data.")
+#### Complete analyses on Set-A  #######
+```
 
 
 
@@ -424,14 +660,16 @@ I have included a `BASH SHELL` script file "PhaseExtenderOnForLoop_SetB.sh"
 $ ./PhaseExtenderOnForLoop_SetB.sh
 ```
 **which will:**
-  - run phase extension on all 25 samples inside **SetA**.
-  - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB02**.
+  - run phase extension on all 25 samples inside **SetB**.
+  - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB_02**.
 
-```BASH
-# Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetB_run02.txt"
-$ cp SetB_run02/merged_haplotype.txt SetB_run02/phaseExtendedHaplotype_SetB_run02.txt
-```
 
 ## Test switch errors
+
+continue ... 
+make bashscrpt for "forlooponBashSetB.sh"
+
+
+
 
 ### Step 04: Second recursive run of haplotype phasing 
