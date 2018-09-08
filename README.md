@@ -172,7 +172,7 @@ Also, the simulated data for Set B may not be exact to the one used in this tuto
 ```bash
 ## make sure that the "phaseExtender" and required dependencies are installed
 # We can run phasing for single sample "NA12891" as 
-../SwitchErrorTutorial$ python3 ~priyanka/phase-Extender2018/phase-Extender.py --input SetA/final_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output SetA/phasedNA12891_setA02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
+../SwitchErrorTutorial$ python3 ~priyanka/phase-Extender2018/phase-Extender.py --input SetA/final_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output SetA/phasedNA12891_SetA02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
 ```
 <br>
 
@@ -201,7 +201,7 @@ bash
 phaseEXT=~priyanka/phase-Extender2018/phase-Extender.py
 
 # create empty file to store the output path for each run
-echo > files_to_merge_setA_run01.txt
+echo > files_to_merge_SetA_run01.txt
 
 for item in NA12891 NA12892 NA06989 NA10850 NA06984 NA07056 NA12045 NA11843 NA12890 NA12889
 do
@@ -210,7 +210,7 @@ do
 
   # also write the path of the output directory for each sample
   # so, they can be merged later 
-  echo "SetA/phased_${item}_SetA_run01/extended_haplotype_${item}.txt" >> files_to_merge_setA_run01.txt
+  echo "SetA/phased_${item}_SetA_run01/extended_haplotype_${item}.txt" >> files_to_merge_SetA_run01.txt
 done
 
 ```
@@ -242,7 +242,7 @@ Assigning values to the global variables ....
 
 
 # Reading the input haplotype file &quot;SetA/final_Simulated_RBphasedHaplotype.txt&quot; 
-  - Lines that have data missing for sample &quot;NA12891&quot; is written in the file &quot;phasedNA12891_setA/missingdata_NA12891.txt&quot; 
+  - Lines that have data missing for sample &quot;NA12891&quot; is written in the file &quot;phasedNA12891_SetA/missingdata_NA12891.txt&quot; 
 
 # Genomic bed file is not provided ... 
   - So, phase extension will run throughout the genome.
@@ -250,7 +250,7 @@ Assigning values to the global variables ....
 # Haplotype reference panel is not provided ... 
   So, phase extension will run using the samples available in the input haplotype file. 
 
-# Filtered the lines that have data missing for sample &quot;NA12891&quot;; check the file &quot;phasedNA12891_setA/missingdata_NA12891.txt&quot; 
+# Filtered the lines that have data missing for sample &quot;NA12891&quot;; check the file &quot;phasedNA12891_SetA/missingdata_NA12891.txt&quot; 
   - Loaded read-backphased variants onto the memory
 
 # Haplotype reference panel is not provided....
@@ -296,7 +296,7 @@ End :)
 ```bash
 
 # remove the first empty line from the file that store path to the extended haplotype for each sample 
-echo "$(tail -n +2 files_to_merge_setA_run01.txt)" > files_to_merge_setA_run01.txt
+echo "$(tail -n +2 files_to_merge_SetA_run01.txt)" > files_to_merge_SetA_run01.txt
 
 
 # set the path for "merge_haplotypePandas.py" file ; **note: Update path as need be.
@@ -306,7 +306,7 @@ mergeHAP=~priyanka/phase-Extender2018/merge_haplotypePandas.py
 # use, a python script to merge the haplotypes together
 # we store the file in a new directory "SetA_02"
 mkdir SetA_02
-python3 ${mergeHAP} --hapList files_to_merge_setA_run01.txt --output SetA_02
+python3 ${mergeHAP} --hapList files_to_merge_SetA_run01.txt --output SetA_02
 ```
 #### <font color="#729FCF"><b>**Terminal Output:**</b></font>
 
@@ -401,7 +401,7 @@ After running above code, the output directory `SetA_02` will include a file nam
 <br>
 
 ## Now, check the quality of the phased data
-To do this we compare the **truth haplotype for setA (i.e `"SetA/truth_RBphasedHaplotype_SetA.txt"`)** with the **output file (i.e `"SetA_run02/phaseExtendedHaplotype_SetA_02.txt"`)**. But, here we only compare the haplotype of sample "NA12891".
+To do this we compare the **truth haplotype for SetA (i.e `"SetA/truth_RBphasedHaplotype_SetA.txt"`)** with the **output file (i.e `"SetA_run02/phaseExtendedHaplotype_SetA_02.txt"`)**. But, here we only compare the haplotype of sample "NA12891".
 
 ```bash
 ## Extract truth haplotype set for Sample "NA12891"
@@ -648,24 +648,23 @@ print("Completed the switch error analyses on first round of phaseExtension on S
 #### Complete analyses on Set-A  #######
 ```
 
-
-
-
 <br>
 ## 03 - Set (B) : for HAPLOTYPE file with 25 samples.
-The process for running haplotype phaseExtension on samples from SetB is typically the same as above. 
+The process for running haplotype phaseExtension on samples from `SetB` is typically the same as above except the sample names. 
 
-I have included a `BASH SHELL` script file "PhaseExtenderOnForLoop_SetB.sh"
+I have included a `BASH SHELL` script file "PhaseExtenderOnForLoop_SetB.sh" which covers all the steps from phasing, merging each phased samples, to extracting phased haplotype for sample ***"NA12891"**.
 ```bash
 # simply run
-$ ./PhaseExtenderOnForLoop_SetB.sh
+../SwitchErrorTutorial$ ./PhaseExtenderOnForLoop_SetB.sh
 ```
 **which will:**
   - run phase extension on all 25 samples inside **SetB**.
   - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB_02**.
 
-
 ## Test switch errors
+Now, take the data and compute switch errors.
+
+
 
 continue ... 
 make bashscrpt for "forlooponBashSetB.sh"
@@ -674,3 +673,18 @@ make bashscrpt for "forlooponBashSetB.sh"
 
 
 ### Step 04: Second recursive run of haplotype phasing 
+
+
+
+
+## Add all the steps for "SetB" in here .....
+
+
+
+
+
+# finally compare the "SetA" against "SetB".
+**conclusion** - yes the sample size improves phasing but with phaseExtender you are able to get good quality phasing even with sample size as small as 10. 
+
+
+
