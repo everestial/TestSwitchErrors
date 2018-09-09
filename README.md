@@ -462,6 +462,7 @@ colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PG_a
 
 ## Import "phased haplotype" for SetA
 phased_SetA_NA12891 <- read.table('SetA_02/phased_Haplotype_NA12891.txt', header = TRUE)
+# or, we can use the file "extended_haplotype_NA12891.txt" from the folder "/SetA/phased_NA12891_SetA_run01/"
 head(phased_SetA_NA12891)
 
 # change the name of the header
@@ -778,7 +779,7 @@ The `BASH SHELL` script is available as file **"PhaseExtenderOnForLoop_SetB_02.s
 ../SwitchErrorTutorial$ ./PhaseExtenderOnForLoop_SetB_02.sh
 ```
 
-The phased output for each sample will be inside directory **SetB_02/**. The merged haplotype file will be in directory **SetB_03/**. It will also extract truth and phased haplotype for sample "NA12891".
+The phased output for each sample will be inside directory **SetB_02/**. The merged haplotype file will be created in directory **SetB_03/**. The SHELL script also has codes to extract truth and phased haplotype for sample **"NA12891"**.
 
 #### Test switch errors
 The `R` script for checking quality of the phasing is available as file **"SwitchErrorTest_PhaseExtenderSetB_02.R"**.
@@ -790,9 +791,17 @@ The `R` script for checking quality of the phasing is available as file **"Switc
 
 <br>
 
-## Compare results for "SetA" and "SetB".
+## Compare results from "SetA" and "SetB".
 # finally compare the "SetA" against "SetB".
-**conclusion** - yes the sample size improves phasing but with phaseExtender you are able to get good quality phasing even with sample size as small as 10. 
+**conclusion** - Increasing the sample size improves phasing but with phaseExtender you are able to get good quality phasing even with sample size as small as 10 when recursive phasing is applied.
+
+Additionally, for some positions we are able to get good resolution of proper phase state by taking low sample size. This can be seen in the phasing of block 1 & 2 in sample NA12891. 
+
+In SetA Block 1 and Block 2 are joined using only 1 sample but increasing the sample size increases the uncertanity and reduces the LOD score. So, it should help running phase extension first by taking closely related sample and then increasing the sample size by including other individuals from the same population, strains or species.
+
+
+
+
 
 *** to add ***
 N50 for the truth set, phased set01, set02, 03.
