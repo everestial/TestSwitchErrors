@@ -784,8 +784,9 @@ The phased output for each sample will be inside directory **SetB_02/**. The mer
 #### Test switch errors
 The `R` script for checking quality of the phasing is available as file **"SwitchErrorTest_PhaseExtenderSetB_02.R"**.
 
-#### Here are some results.
-
+#### Results.
+With 25 samples phaseExtender was able to reduce the switch error rates to **0.009828264** after 1 recursive phasing (after accounting for haplotype breaks).
+While the haplotypes weren't phased genome wide, another recursive haplotype phasing should yeild genome wide haplotype even with lower phasing error. The already joined blocks with switchpoint will stay as they are but tuning the parameter like "lods", "numHets", "useSample", "snpTh" provides a highly controllable haplotype phasing in organisms with no available reference panel.
 
 
 
@@ -795,11 +796,7 @@ The `R` script for checking quality of the phasing is available as file **"Switc
 # finally compare the "SetA" against "SetB".
 **conclusion** - Increasing the sample size improves phasing but with phaseExtender you are able to get good quality phasing even with sample size as small as 10 when recursive phasing is applied.
 
-Additionally, for some positions we are able to get good resolution of proper phase state by taking low sample size. This can be seen in the phasing of block 1 & 2 in sample NA12891. 
-
-In SetA Block 1 and Block 2 are joined using only 1 sample but increasing the sample size increases the uncertanity and reduces the LOD score. So, it should help running phase extension first by taking closely related sample and then increasing the sample size by including other individuals from the same population, strains or species.
-
-
+Additionally, for some positions we are able to get good resolution of proper phase state by taking low sample size. This can be seen in the phasing of block 1 & 2 in sample NA12891.
 
 
 
