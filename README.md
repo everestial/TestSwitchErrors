@@ -23,6 +23,7 @@ This is covered under the tutorial that runs haplotype phasing for sample (NA128
 
 ###### To run phase extension on the RBphased haplotype for your own data you will need aligned **BAM** and **VCF**. This data can be used with [phaser](https://github.com/secastel/phaser/tree/master/phaser), [HapCut2](https://github.com/vibansal/HapCUT2), or [GATK ReadBackPhasing](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_phasing_ReadBackedPhasing.php) to create appropriate **HAPLOTYPE** file required by phaseExtender. After preparation of such RBphased data, you can directly skip to Step 03 to see how further phase extension is done. A detailed tutorial for preparation of HAPLOTYPE file is described [here](https://github.com/everestial/phaseRB).
 <br>
+
 **This is what we will do in this step:**
   - **2)** create HAPLOTYPE file compatible with **phaseExtender** 
   **Note:** Unlike **ShapeIT** **phaseExtender** takes haplotype as IUPAC base.
