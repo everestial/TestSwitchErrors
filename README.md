@@ -15,8 +15,8 @@ Infer haplotype of the HapMap Sample (NA12891 from b36) using **phaseExtender** 
 ### Step 01: Check metrices of the inputfiles. 
 This is covered under the tutorial that runs haplotype phasing for sample (NA12891) using **ShapeIT**.
 
-
 <br>
+
 ### Step 02: Prepare ReadBackPhased "HAPLOTYPE" file. 
 
 ###### **Note:** This is a simulation based preparation of RBphased haplotype from available reference panel [of Chr22 from b36, 2009](https://mathgen.stats.ox.ac.uk/impute/data_download_hapmap3_r2.html). Other versions of reference panel are available [here](https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#reference).
