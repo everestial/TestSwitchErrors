@@ -170,7 +170,7 @@ Also, the simulated data for Set B may not be exact to the one used in this tuto
 <br>
 
 ### Step 03 - Run haplotype phasing using HAPLOTYPE file.
-#####<font color="#729FCF"><b>The tutorial starting from Step 03 can be used as a model to run haplotype phasing for the data obtained from RBphased VCFs. </b></font>
+##### <font color="#729FCF"><b>The tutorial starting from Step 03 can be used as a model to run haplotype phasing for the data obtained from RBphased VCFs. </b></font>
 
 #### 03 - Set (A): for HAPLOTYPE file with 10 samples.
 
@@ -181,7 +181,7 @@ Also, the simulated data for Set B may not be exact to the one used in this tuto
 ```
 <br>
 
-##### But, instead of running phasing for only "NA12891" we run phasing for all the samples.
+##### But, instead of running phasing for only "NA12891" we will run phasing for all the samples.
 ```bash
 # We will use a prepared "BASH" shell script to run phasing on all the samples (on for-loop).
 # Let's test the SHELL that is active on the background
@@ -389,14 +389,15 @@ Global maximum memory usage: 95.10 (mb)
 elapsed time:  1.6246700286865234
 </pre>
 
-After running above code, the output directory `SetA_02` will include a file named "merged_haplotype.txt". **This file is comparable to the file we started with (i.e "simulated_RBphasedHaplotype_SetA.txt") but has larger and improved haplotype blocks.**
+After running above code, the output directory **SetA_02** will include a file named **"merged_haplotype.txt"**. **This file is comparable to the file we started with (i.e "simulated_RBphasedHaplotype_SetA.txt") but has larger and improved haplotype blocks.**
 
 ```BASH
 # Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetA02.txt"
 ../SwitchErrorTutorial$ cp SetA_02/merged_haplotype.txt SetA_02/phaseExtendedHaplotype_SetA_02.txt
 ```
+
 <br>
-**Note:** All the above process (from running haplotype phaseExtension to merging individual haplotype for each sample) that is run on the `BASH SHELL` is made available as bash script file **"PhaseExtenderOnForLoopSetA.sh"**. This file includes code for **a)** running phaseExtension on a for-loop **b)** merging the haplotype output for each sample **c)** copying the merged haplotype as a new file.
+**Note:** **This completes the first round of phase extension on all the samples. It also merges each phase extended sample and prepares HAPLOTYPE file for next round.** All the above process (from running haplotype phaseExtension to merging individual haplotype for each sample) that is run on the `BASH SHELL` is made available as bash script file **"PhaseExtenderOnForLoopSetA.sh"**. This file includes code for **a)** running phaseExtension on a for-loop **b)** merging the haplotype output for each sample **c)** copying the merged haplotype as a new file.
 
 **To run the file :**
 ```bash
@@ -406,6 +407,8 @@ After running above code, the output directory `SetA_02` will include a file nam
 <br>
 
 ## Now, check the quality of the phased data
+**Note:** (skip this step if running phase extension on your own data)
+
 To do this we compare the **truth haplotype for SetA (i.e `"SetA/truth_RBphasedHaplotype_SetA.txt"`)** with the **output file (i.e `"SetA_run02/phaseExtendedHaplotype_SetA_02.txt"`)**. But, here we only compare the haplotype of sample "NA12891".
 
 ```bash
@@ -518,6 +521,7 @@ switch_err_rate = num_of_switch/(number_of_hets)
 switch_err_rate
 # 0.02048
 ```
+###### **Result:** the switch error is 0.02048 which is comparable to ShapeIT as described in this tutorial.
 <br>
 
 **But, the above switch error calculation doesn't take haplotype breaks into account. Remember our haplotype isn't phased genome wide, but smaller haplotypes are merged to make a larger one.**
@@ -579,6 +583,8 @@ switch_error_rate = (freq_of_switch/total_possible_switch)
 switch_error_rate
 # [1] 0.03269191
 ```
+###### **Result:** after accounting for haplotype breaks the switch error is 0.03269 which is comparable to ShapeIT as described in this tutorial.
+
 <br>
 
 **Let's add above data as another column**
@@ -650,9 +656,8 @@ Histogram plot             |  Density plot
 print("Completed the switch error analyses on first round of phaseExtension on Set-A data.")
 #### Complete analyses on Set-A  #######
 ```
-<br>
 
-### Step 04: Second recursive (run 02) haplotype phasing 
+<br>
 The haplotype in **SetA_02** are still not a global haplotype but rather larger blocks produced by joining smaller blocks. You can compare the haplotype size distribution (of sample "NA12891") before vs. after the first run. **This plots are available in the folder "../SetA/phased_NA12891_SetA_run01"**
 
 **Haplotype size distribution by number of variants.**
@@ -669,8 +674,13 @@ Haplotype size distribution before phaseExtension               |  Haplotype siz
 :-------------------------:|:-------------------------:
 ![hap_size_byGenomicRange_NA12891_initial.png](./SetA/phased_NA12891_SetA_run01/hap_size_byGenomicRange_NA12891_initial.png)  |  ![hap_size_byGenomicRange_NA12891_final.png](./SetA/phased_NA12891_SetA_run01/hap_size_byGenomicRange_NA12891_final.png)
 
+**So, now we proceed another round of phase extension.**
 
-So, to make a global phased haplotype we will go through another round of phase extension. We can run the phase extension recursively until you desire. **To control for how the phase extension proceeds, "phaseExtender" provide control over several parameters.**
+<br>
+
+### Step 04: Recursive (run 02) haplotype phasing 
+
+To make a global phased haplotype we will go through another round of phase extension. We can run the phase extension recursively until you desire. **To control for how the phase extension proceeds, "phaseExtender" provides control over several parameters.**
   - "numHets" : the maximum number of heterozygous that will be used to compute LODS score between blocks. 
     - The larger the numHets the larger is the computed LODS score. But, there is a limit to it. The LODS will decrease if the blocks being joined are very large and the ends of the two joining blocks are at LD of about 50. 
     - To account for this problem "phaseExtender" starts computation by running markov chains between the SNPs that are closest betweent the two consecutive blocks. So, it will help to keep low "numHets" as recurssion progresses.
@@ -679,6 +689,7 @@ So, to make a global phased haplotype we will go through another round of phase 
   - "culLH" : the likelihoods of the lods can be either max summed or max-producted.
   - "snpTh" : minimum number of SNPs required in a block so it can be phase extended.
     - the default value is at "3". I suggest using higher snpTh as the beginning but decreasing it as recurssion progresses.
+  - "useSample" : to only use select samples to run phaseExtension. This is helpful if you want to cluster phasing by groups first to make large blocks, before doing any recursive phase extension.
 <br>
 
 **I plan on doing only one more round of phaseExtension. So, I will keep the several parameters low (`numHets 40`, `lods 1`), so a few but large haplotype blocks can be prepared.**
@@ -697,28 +708,26 @@ The codes used in this round of phase extension is provided as `BASH SHELL` scri
   - **d)** and extract the phased haplotype set for sample "NA12891" as file named **"phased_Haplotype_NA12891.txt"**.
 
 
-Compare the phased haplotype agains the truth set:
+## Now, check the quality of the phased data
+**Note:** (skip this step if running phase extension on your own data)
 
-All the process is similar to what we did earlier (when we compared truth set against the phased SetA.) Now, we compare truth against phased SetA02
+To do this we compare the **truth haplotype of sample "NA12891" for SetA (i.e `"SetA/truth_Haplotype_NA12891.txt"`)** with the **output file (i.e `"SetA_03/phased_Haplotype_NA12891.txt"`)**.
 
-continue....
+The R script file making comparison of the truth set against phased set is available as file **"SwitchErrorTest_PhaseExtenderSetA_02.R"**.
 
+<br>
 
+<pre>
+Result: In this second round of phase extension we were able to reduce the switch error to 0.01665632 (before accounting for haplotype breaks) and 0.01748396 (after accounting for haplotype breaks).
 
-
-
-
-
-
-
-
-
+Overall we were able to join smaller haplotypes and reduce haplotype frequency from 1381 to 267 in first phase extension (run 01) and from 267 to 23 in second phase extension (run 02). With further recursive phase extension we should be able to create global haplotype.
+</pre>
 
 
 
-
-
-
+Initial number of RBphased haplotypes (n=1381) | Number of RBphased haplotypes after first phase extension (n=267) | Number of RBphased haplotypes after second round of phase extension (n=23) 
+:-------------------------:|:-------------------------:|:-------------------------:
+![total_haps_NA12891_initial.png](./SetA/phased_NA12891_SetA_run01/total_haps_NA12891_initial.png) |  ![total_haps_NA12891_initial.png](./SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_initial.png)| ![total_haps_NA12891_final.png](./SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_final.png)
 
 
 <br>
