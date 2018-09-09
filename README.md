@@ -19,7 +19,11 @@ This is covered under the tutorial that runs haplotype phasing for sample (NA128
 <br>
 ### Step 02: Prepare ReadBackPhased "HAPLOTYPE" file. 
 
-**This is what we will do:**
+###### **Note:** This is a simulation based preparation of RBphased haplotype from available reference panel [of Chr22 from b36, 2009](https://mathgen.stats.ox.ac.uk/impute/data_download_hapmap3_r2.html). Other versions of reference panel are available [here](https://mathgen.stats.ox.ac.uk/impute/impute_v2.html#reference).
+
+###### To run phase extension on the RBphased haplotype for your own data you will need aligned **BAM** and **VCF**. This data can be used with [phaser](https://github.com/secastel/phaser/tree/master/phaser), [HapCut2](https://github.com/vibansal/HapCUT2), or [GATK ReadBackPhasing](https://software.broadinstitute.org/gatk/documentation/tooldocs/3.8-0/org_broadinstitute_gatk_tools_walkers_phasing_ReadBackedPhasing.php) to create appropriate **HAPLOTYPE** file required by phaseExtender. After preparation of such RBphased data, you can directly skip to Step 03 to see how further phase extension is done. A detailed tutorial for preparation of HAPLOTYPE file is described [here](https://github.com/everestial/phaseRB).
+<br>
+**This is what we will do in this step:**
   - **2)** create HAPLOTYPE file compatible with **phaseExtender** 
   **Note:** Unlike **ShapeIT** **phaseExtender** takes haplotype as IUPAC base.
     - first we select 9 random samples (SetA) and then 24 random samples (SetB) from CEU population. In addition to this random samples we will include sample (NA12891) making the final SetA at 10 samples and SetB at 25 samples.
@@ -647,7 +651,7 @@ print("Completed the switch error analyses on first round of phaseExtension on S
 ```
 <br>
 
-### Step 04: Second recursive run of haplotype phasing 
+### Step 04: Second recursive (run 02) haplotype phasing 
 The haplotype in **SetA_02** are still not a global haplotype but rather larger blocks produced by joining smaller blocks. You can compare the haplotype size distribution (of sample "NA12891") before vs. after the first run. **This plots are available in the folder "../SetA/phased_NA12891_SetA_run01"**
 
 **Haplotype size distribution by number of variants.**
