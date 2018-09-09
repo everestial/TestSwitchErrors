@@ -732,35 +732,65 @@ Initial number of RBphased haplotypes (n=1381) | Number of RBphased haplotypes a
 
 <br>
 ## 03 - Set (B) : for HAPLOTYPE file with 25 samples.
-The process for running haplotype phaseExtension on samples from `SetB` is typically the same as above except the sample names. 
+The SetA data only had 10 samples. Here we take 25 samples to see how it affects haplotype phasing. The process for running haplotype phaseExtension on samples from `SetB` is typically the same as above except the sample names. 
 
-I have included a `BASH SHELL` script file "PhaseExtenderOnForLoop_SetB.sh" which covers all the steps from phasing, merging each phased samples, to extracting phased haplotype for sample ***"NA12891"**.
+This tutorial includes a `BASH SHELL` script file "PhaseExtenderOnForLoop_SetB.sh" which covers all the steps from phasing, merging each phased samples, to extracting phased haplotype for sample ***"NA12891"**.
 ```bash
 # simply run
 ../SwitchErrorTutorial$ ./PhaseExtenderOnForLoop_SetB.sh
 ```
 **which will:**
   - run phase extension on all 25 samples inside **SetB**.
-  - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB_02**.
+  - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB_02** and further rename it to "".
 
 ## Test switch errors
-Now, take the data and compute switch errors.
+Now, take the data and compute switch errors. The **R** script is available as file **"SwitchErrorTest_PhaseExtenderSetB.R"**.
+
+
+Haplotype switch points without accounting for haplotype breaks (SE rate = 0.01272502) | Haplotype switch points after accounting for haplotype breaks (SE rate = 0.0190358)
+:-------------------------:|:-------------------------:
+![SwitchPoints_SetB_withOutHaplotypeBreaks.png](./SwitchPoints_SetB_withOutHaplotypeBreaks.png) | ![SwitchPoints_SetB_includingHHaplotypeBreaks.png](./SwitchPoints_SetB_includingHHaplotypeBreaks.png)
+
+
+###### **Result:** You can see that there are fewer switchpoints when sample size is increased from 10 to 25. 
+
+<br>
+
+### Changes in number and size of haplotypes (by number of variants) before vs. after phase extension
+
+Haplotype size distribution before phase extension | Haplotype size distribution after phase extension
+:-------------------------:|:-------------------------:
+![hap_size_byVar_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_final.png](./SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_final.png)
+
+<br>
+
+Number of haplotypes before phase extension (n = 1381) | Number of haplotypes after phase extension (n = 155)
+:-------------------------:|:-------------------------:
+![total_haps_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/total_haps_NA12891_initial.png) | ![total_haps_NA12891_final.png](./SetB/phased_NA12891_SetB_run01/total_haps_NA12891_final.png)
+
+
+### Recursive (run 02) haplotype phasing for SetB data
+
+The `BASH SHELL` script is available as file **"PhaseExtenderOnForLoop_SetB_02.sh"**. We are keeping lods cutoff low at "1".
+
+```bash
+# simply run
+../SwitchErrorTutorial$ ./PhaseExtenderOnForLoop_SetB_02.sh
+```
+
+The phased output for each sample will be inside directory **SetB_02/**. The merged haplotype file will be in directory **SetB_03/**. It will also extract truth and phased haplotype for sample "NA12891".
+
+#### Test switch errors
+The `R` script for checking quality of the phasing is available as file **"SwitchErrorTest_PhaseExtenderSetB_02.R"**.
+
+#### Here are some results.
 
 
 
-continue ... 
-make bashscrpt for "forlooponBashSetB.sh"
 
+<br>
 
-
-
-
-## Add all the steps for "SetB" in here .....
-
-
-
-
-
+## Compare results for "SetA" and "SetB".
 # finally compare the "SetA" against "SetB".
 **conclusion** - yes the sample size improves phasing but with phaseExtender you are able to get good quality phasing even with sample size as small as 10. 
 
