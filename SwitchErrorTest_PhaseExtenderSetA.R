@@ -164,6 +164,7 @@ haplotype_size_numeric
 
 ## Let's plot a histogram of the haplotype size distribution 
 hisHap <- hist(haplotype_size_numeric)  # general histogram metrics for the data 
+png("Histogram_ofHaplotypeSizeDistribution_SetA.png", width = 1600, height = 600)
 hist(haplotype_size_numeric, 
      main="Histogram for Haplotype size distribution", 
      xlab="haplotype size", 
@@ -175,13 +176,15 @@ hist(haplotype_size_numeric,
      breaks=20)
 # add the size of the frequency to the histogram plot 
 text(hisHap$mids,hisHap$counts,labels=hisHap$counts, adj=c(0.5, -0.5))
+dev.off()
 
 ## Density plot
 densHap <- density(haplotype_size_numeric)
+png("DensityPlot_ofHaplotypeSizeDistribution_SetA.png", width = 1600, height = 600)
 plot(densHap, main = "Density plot of the haplotype size distribution")
 polygon(densHap, col = 'red', border = 'blue')
+dev.off()
 
 print("Completed the switch error analyses on first round of phaseExtension on Set-A data.")
 #### Complete analyses on Set-A  #######
-
 
