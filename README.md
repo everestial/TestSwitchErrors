@@ -804,7 +804,7 @@ Number of haplotypes before phase extension (n = 1381) | Number of haplotypes af
 #### Histogram of Haplotype size distribution (by number of variants)
 
 Initial | after run 01 | after run 02
-:-------------------------:|:-------------------------:
+:-------------------------:|:-------------------------:|:-------------------------:
 ![hap_size_byVar_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_initial.png](./SetB_02/phased_NA12891_SetB_run02/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_final.png](./SetB_02/phased_NA12891_SetB_run02/hap_size_byVar_NA12891_final.png)
 
 <br>
@@ -812,7 +812,7 @@ Initial | after run 01 | after run 02
 #### Histogram of Haplotype size distribution ((by genomic distance)
 
 Initial | after run 01 | after run 02
-:-------------------------:|:-------------------------:
+:-------------------------:|:-------------------------:|:-------------------------:
 ![hap_size_byGenomicRange_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/hap_size_byGenomicRange_NA12891_initial.png) | ![hap_size_byGenomicRange_NA12891_final.png](./SetB/phased_NA12891_SetB_run01/hap_size_byGenomicRange_NA12891_final.png) | ![hap_size_byGenomicRange_NA12891_final.png](./SetB_02/phased_NA12891_SetB_run02/hap_size_byGenomicRange_NA12891_final.png)
 
 <br>
