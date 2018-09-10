@@ -1,13 +1,12 @@
 
 ## Purpose of the this script: 
-  # Compute the switch points using the truth and phased haplotype (obtained from phaseExtender)
+  # Compute the switch points using the truth and first round of phased haplotype (obtained from phaseExtender)
   # Here we use 10 RBphased samples used in Set A.
-  # We do two rounds of RBphasing and phase comparison.
 
-
-### Set the required path; **update the path as need be with your directory 
+### Set the required path; 
+## **update the path as need be with your directory 
 getwd()
-setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/HapMap3_r2_b36_2009/Contd_PhaseQC_PhaseExtender")
+setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
 getwd()
 list.files()  # read available files and folders 
 
@@ -27,7 +26,8 @@ colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PG_a
 
 
 ## Import "phased haplotype" for SetA
-phased_SetA_NA12891 <- read.table('SetA_run02/phased_Haplotype_NA12891.txt', header = TRUE)
+phased_SetA_NA12891 <- read.table('SetA_02/phased_Haplotype_NA12891.txt', header = TRUE)
+# or, we can use the file "extended_haplotype_NA12891.txt" from the folder "/SetA/phased_NA12891_SetA_run01/"
 head(phased_SetA_NA12891)
 
 # change the name of the header
@@ -53,7 +53,7 @@ merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phase
 # .. properly phased block. But, transition from 0 -> 1 or from 1 -> 0 suggests a "Switch Error" betweeen the blocks.
 
 # Now, plot the "Switch Error" points as png
-png("out_match_SetA_phaseExtender.png", width = 1600, height = 600)
+png("SwitchPoints_SetA_withOutHaplotypeBreaks.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic coordinates.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
 #title(main = "Switch points", xlab = 'genomic coordinates', ylab = 'switch points')
@@ -131,6 +131,7 @@ haplotype_sizes
 # calculate switch error rate
 switch_error_rate = (freq_of_switch/total_possible_switch)
 switch_error_rate
+# [1] 0.03269191
 
 ## Now, add another column that represent the fully accounted haplotype switchpoints.
 phase_state = 0
@@ -149,8 +150,10 @@ merged.data$match_by_pi <- match_by_pi
 
 ## Now, make switch points plot by accounting for the haplotype breaks. 
 # for that we will create another column with updated matches between truth and phased haplotypes
+png("SwitchPoints_SetA_withHaplotypeBreaks.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match_by_pi, main = "Switch points over the genomic coordinates with haplotype breaks.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
+dev.off()
 
 ## We can now overlay the haplotype breaks position on the top of switch points plot
 abline(v=haplotype_breaks, col='red')
@@ -180,17 +183,5 @@ polygon(densHap, col = 'red', border = 'blue')
 
 print("Completed the switch error analyses on first round of phaseExtension on Set-A data.")
 #### Complete analyses on Set-A  #######
-
-
-######### *** Set-A : next recursive round of phaseExtension *** ############
-#### We can see above that we were able to reduce the switch points to 0.0326919.
-# We can however further improve phasing by running phaseExtension on the data recursively.
-# Further phase extension is covered in another tutorial : 
-
-### After recursive phase extension we now further analyse the switch error metrices.
-
-
-
-
 
 
