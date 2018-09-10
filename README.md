@@ -755,7 +755,7 @@ Now, take the data and compute switch errors. The **R** script is available as f
 
 Haplotype switch points without accounting for haplotype breaks (SE rate = 0.01272502) | Haplotype switch points after accounting for haplotype breaks (SE rate = 0.0190358)
 :-------------------------:|:-------------------------:
-![SwitchPoints_SetB_withOutHaplotypeBreaks.png](./SwitchPoints_SetB_withOutHaplotypeBreaks.png) | ![SwitchPoints_SetB_includingHHaplotypeBreaks.png](./SwitchPoints_SetB_includingHHaplotypeBreaks.png)
+![SwitchPoints_SetB_withOutHaplotypeBreaks.png](./SwitchPoints_SetB_withOutHaplotypeBreaks.png) | ![SwitchPoints_SetB_includingHaplotypeBreaks.png](./SwitchPoints_SetB_includingHaplotypeBreaks.png)
 
 
 ###### **Result:** You can see that there are fewer switchpoints when sample size is increased from 10 to 25. 
