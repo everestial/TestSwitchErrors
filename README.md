@@ -796,14 +796,12 @@ With 25 samples phaseExtender was able to reduce the switch error rates to **0.0
 
 
 Number of haplotypes before phase extension (n = 1381) | Number of haplotypes after phase extension (n = 155) | Number of haplotypes after phase extension (n = 7) 
-:-------------------------:|:-------------------------:
+:-------------------------:|:-------------------------:|:-------------------------:
 ![total_haps_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/total_haps_NA12891_initial.png) | ![total_haps_NA12891_final.png](./SetB/phased_NA12891_SetB_run01/total_haps_NA12891_final.png) | ![total_haps_NA12891_final.png](./SetB_02/phased_NA12891_SetB_run02/total_haps_NA12891_final.png)
 
 <br>
 
 #### Histogram of Haplotype size distribution (by number of variants)
-
-<br>
 
 Initial | after run 01 | after run 02
 :-------------------------:|:-------------------------:
@@ -812,8 +810,6 @@ Initial | after run 01 | after run 02
 <br>
 
 #### Histogram of Haplotype size distribution ((by genomic distance)
-
-hello 
 
 Initial | after run 01 | after run 02
 :-------------------------:|:-------------------------:
@@ -837,8 +833,4 @@ Additionally, for some positions we are able to get good resolution of proper ph
 N50 for the truth set, phased set01, set02, 03.
 switchError per mb
 phasedSet of sample NA12878.
-
-
-
-
 
