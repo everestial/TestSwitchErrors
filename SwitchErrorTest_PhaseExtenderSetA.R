@@ -6,7 +6,7 @@
 ### Set the required path; 
 ## **update the path as need be with your directory 
 getwd()
-setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
+# setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
 getwd()
 list.files()  # read available files and folders 
 
@@ -153,10 +153,10 @@ merged.data$match_by_pi <- match_by_pi
 png("SwitchPoints_SetA_withHaplotypeBreaks.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match_by_pi, main = "Switch points over the genomic coordinates with haplotype breaks.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
+abline(v=haplotype_breaks, col='red')
 dev.off()
 
 ## We can now overlay the haplotype breaks position on the top of switch points plot
-abline(v=haplotype_breaks, col='red')
 
 # for convenience let's convert this haplotype size list into integer array
 haplotype_size_numeric <- as.numeric(unlist(haplotype_sizes))

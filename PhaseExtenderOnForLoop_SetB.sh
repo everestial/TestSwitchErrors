@@ -5,7 +5,7 @@ set -euf pipefail  # prevents all the codes from running if a error is hit in an
 ## Run phaseExtension on all the samples using "for loop" 
 
 # Set the path for "phaseExtender.py" file ; **note: Update path as need be.
-phaseEXT=~priyanka/phase-Extender2018/phase-Extender.py
+phaseEXT=phase-Extender.py
 
 # create empty file to store the output path for each run
 echo > files_to_merge_SetB_run01.txt
@@ -31,18 +31,18 @@ echo "$(tail -n +2 files_to_merge_SetB_run01.txt)" > files_to_merge_SetB_run01.t
 
 # Set the path for "merge_haplotypePandas.py" file ; 
 # **note: Update path as need be.
-mergeHAP=~priyanka/phase-Extender2018/merge_haplotypePandas.py
+mergeHAP=merge_haplotypePandas.py
 
 
 # use, a python script to merge the haplotypes together
-# we store the file in a new directory "SetB_02"
-mkdir SetB_02
-python3 ${mergeHAP} --hapList files_to_merge_SetB_run01.txt --output SetB_02
+# we store the file in a new directory "SetB_02_01"
+mkdir SetB_02_01
+python3 ${mergeHAP} --hapList files_to_merge_SetB_run01.txt --output SetB_02_01
 
 
 # Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetB02.txt"
-cp SetB_02/merged_haplotype.txt SetB_02/phaseExtendedHaplotype_SetB_02.txt
-rm SetB_02/merged_haplotype.txt
+cp SetB_02_01/merged_haplotype.txt SetB_02_01/phaseExtendedHaplotype_SetB_02_01.txt
+rm SetB_02_01/merged_haplotype.txt
 
 
 ## Extract truth haplotype set for Sample "NA12891" 
@@ -57,12 +57,12 @@ awk 'BEGIN{FS=OFS="\t"} {if ($46 !=".") print $1, $2, $45, $46}' SetB/truth_RBph
 
 
 ## Now, extract the phased haplotype for Sample "NA12891"
-head -n1 SetB_02/phaseExtendedHaplotype_SetB_02.txt 
+head -n1 SetB_02_01/phaseExtendedHaplotype_SetB_02_01.txt 
 #CHROM	POS	REF	all-alleles	all-freq	NA12891:PI	NA12891:PG_al	NA12892:PI	NA12892:PG_al	NA06989:PI	NA06989:PG_al	NA11917:PI	NA11917:PG_al	NA12283:PI	NA12283:PG_al	NA07056:PI	NA07056:PG_al	NA11992:PI	NA11992:PG_al	NA12057:PI	NA12057:PG_al	NA12383:PI	NA12383:PG_al	NA12154:PI	NA12154:PG_al	NA12749:PI	NA12749:PG_al	NA12890:PI	NA12890:PG_al	NA12776:PI	NA12776:PG_al	NA12827:PI	NA12827:PG_al	NA12342:PI	NA12342:PG_al	NA11891:PI	NA11891:PG_al	NA11920:PI	NA11920:PG_al	NA12778:PI	NA12778:PG_al	NA12763:PI	NA12763:PG_al	NA12399:PI	NA12399:PG_al	NA11995:PI	NA11995:PG_al	NA12750:PI	NA12750:PG_al	NA12875:PI	NA12875:PG_al	NA06985:PI	NA06985:PG_al	NA12400:PI	NA12400:PG_al
 
 
 # here the index position of the haplotype for sample "NA12891" is 6 and 7
-awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' SetB_02/phaseExtendedHaplotype_SetB_02.txt > SetB_02/phased_Haplotype_NA12891.txt
+awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' SetB_02_01/phaseExtendedHaplotype_SetB_02_01.txt > SetB_02_01/phased_Haplotype_NA12891.txt
 
 
 ## Now, use the "R" script for computing "switch error" statistics.

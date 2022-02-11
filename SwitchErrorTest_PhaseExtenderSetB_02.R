@@ -6,7 +6,7 @@
 ### Set the required path; 
 ## **update the path as need be with your directory 
 getwd()
-setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
+# setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
 getwd()
 list.files()  # read available files and folders 
 
@@ -53,7 +53,7 @@ merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phase
 # .. properly phased block. But, transition from 0 -> 1 or from 1 -> 0 suggests a "Switch Error" betweeen the blocks.
 
 # Now, plot the "Switch Error" points as png
-png("SwitchPoints_SetB02_withOutHaplotypeBreaks.png", width = 1600, height = 600)
+png("SwitchPoints_SetB02_withOutHaplotypeBreaksvuown.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic coordinates.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
 #title(main = "Switch points", xlab = 'genomic coordinates', ylab = 'switch points')
@@ -164,13 +164,13 @@ merged.data$match_by_pi <- match_by_pi
 
 ## Now, make switch points plot by accounting for the haplotype breaks. 
 # for that we will create another column with updated matches between truth and phased haplotypes
-png("SwitchPoints_SetB02_includingHaplotypeBreaks.png", width = 1600, height = 600)
+png("SwitchPoints_SetB02_includingHaplotypeBreaksvuown.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match_by_pi, main = "Switch points over the genomic coordinates with haplotype breaks.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
+abline(v=haplotype_breaks, col='red')
 dev.off()
 
 ## We can now overlay the haplotype breaks position on the top of switch points plot
-abline(v=haplotype_breaks, col='red')
 
 
 # for convenience let's convert this haplotype size list into integer array
@@ -179,7 +179,7 @@ haplotype_size_numeric
 
 ## Let's plot a histogram of the haplotype size distribution 
 hisHap <- hist(haplotype_size_numeric)  # general histogram metrics for the data 
-png("Histogram_ofHaplotypeSizeDistribution_SetB02.png", width = 1600, height = 600)
+png("Histogram_ofHaplotypeSizeDistribution_SetB02vuown.png", width = 1600, height = 600)
 hist(haplotype_size_numeric, 
      main="Histogram for Haplotype size distribution", 
      xlab="haplotype size", 
@@ -195,7 +195,7 @@ dev.off()
 
 ## Density plot
 densHap <- density(haplotype_size_numeric)
-png("Histogram_ofHaplotypeSizeDistribution_SetB02.png", width = 1600, height = 600)
+png("Histogram_ofHaplotypeSizeDistribution_SetB02vuown.png", width = 1600, height = 600)
 plot(densHap, main = "Density plot of the haplotype size distribution")
 polygon(densHap, col = 'red', border = 'blue')
 dev.off()

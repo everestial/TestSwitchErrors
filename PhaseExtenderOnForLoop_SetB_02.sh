@@ -5,7 +5,7 @@ set -euf pipefail  # prevents all the codes from running if a error is hit in an
 ## Run phaseExtension on all the samples using "for loop" 
 
 # set the path for "phaseExtender.py" file ; **note: Update path as need be.
-phaseEXT=~priyanka/phase-Extender2018/phase-Extender.py
+phaseEXT=phase-Extender.py
 
 # create empty file to store the output path for each run
 echo > files_to_merge_SetB_run02.txt
@@ -33,19 +33,19 @@ echo "$(tail -n +2 files_to_merge_SetB_run02.txt)" > files_to_merge_SetB_run02.t
 
 
 # set the path for "merge_haplotypePandas.py" file ; **note: Update path as need be.
-mergeHAP=~priyanka/phase-Extender2018/merge_haplotypePandas.py
+mergeHAP=merge_haplotypePandas.py
 
 # use, a python script to merge the haplotypes together
-# we store the file in a new directory "SetB_03"
-mkdir SetB_03
-python3 ${mergeHAP} --hapList files_to_merge_SetB_run02.txt --output SetB_03
+# we store the file in a new directory "SetB_03_1"
+mkdir SetB_03_1
+python3 ${mergeHAP} --hapList files_to_merge_SetB_run02.txt --output SetB_03_1
 
 
 
 # Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetB02.txt".
 # remove the old file after renaming
-cp SetB_03/merged_haplotype.txt SetB_03/phaseExtendedHaplotype_SetB_03.txt
-rm SetB_03/merged_haplotype.txt
+cp SetB_03_1/merged_haplotype.txt SetB_03_1/phaseExtendedHaplotype_SetB_03_1.txt
+rm SetB_03_1/merged_haplotype.txt
 
 
 ## extract the truth phased set for sample "NA12891"
@@ -55,7 +55,7 @@ rm SetB_03/merged_haplotype.txt
 # the index position of "NA12891" is 6 and 7.
 
 # here the index position of the haplotype for sample "NA12891" is 6 and 7
-awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' SetB_03/phaseExtendedHaplotype_SetB_03.txt > SetB_03/phased_Haplotype_NA12891.txt
+awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' SetB_03_1/phaseExtendedHaplotype_SetB_03_1.txt > SetB_03_1/phased_Haplotype_NA12891.txt
 
 
 

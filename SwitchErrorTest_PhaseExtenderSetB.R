@@ -7,7 +7,7 @@
 ### Set the required path; 
 ## **update the path as need be with your directory 
 getwd()
-setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
+# setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
 getwd()
 list.files()  # read available files and folders 
 
@@ -79,7 +79,7 @@ switch_err_rate
 
 # switch error rate per mb
 # the size of human Chr 22 is about 62.3 mb
-switch_error_rate_perMb = switch_error_rate/(62)
+switch_error_rate_perMb = switch_err_rate/(62)
 switch_error_rate_perMb
 # [1] 0.0002819994
 
