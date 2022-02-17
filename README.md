@@ -23,14 +23,14 @@ This app is written in python3, so you need to have python3 installed on your sy
 
 1. Clone this repo.
 
-```
+```bash
 git clone https://github.com/everestial/TestSwitchErrors.git
 cd TestSwitchErrors
 ```
 
 2. Make virtual env for python and install requirements.
 
-```
+```bash
 python3 -m venv myenv
 source myenv/bin/activate   # for linux
 myenv\Scripts\activate      # for windows
@@ -71,6 +71,16 @@ All, the required input files and scripts file for this tutorial is available at
 
 ### Step 02-A: Prepare HAPLOTYPE data (truth set and simulated set)
 
+You can use your own data. But if you want to just test this application first. You can download sample data provided in this application by:
+
+```bash
+
+wget https://github.com/everestial/TestSwitchErrors/raw/master/HapMap3_r2_b36_2009.zip -O HapMap3_r2_b36_2009.zip
+mv HapMap3_r2_b36_2009.zip data/HapMap3_r2_b36_2009.zip
+unzip data/HapMap3_r2_b36_2009.zip
+
+```
+
 #### Set A: make HAPLOTYPE file with 10 samples
 
 ``` html
@@ -80,18 +90,18 @@ NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889
 
 ```bash
 #check if required files are there
-$ ls HapMap3_r2_b36_2009/
+$ ls data/HapMap3_r2_b36_2009/
 genetic_map_chr20_combined_b36.txt  hapmap3_r2_b36_chr20.haps
 hapmap3_r2_b36_all.sample           hapmap3_r2_b36_chr20.legend
 
 # make directory to store the file for simulated "SetA"
-$ mkdir SetA
+$ mkdir data/SetA
 # this will create an empty directory "SetA"
 ```
 
 ```python
 # now, run the python script 
-$ python3 makeHapFile.py -haps HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.haps -legend HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.legend -sample_file HapMap3_r2_b36_2009/hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889 -output_truth SetA/truth_RBphasedHaplotype_SetA.txt -output_sim SetA/simulated_RBphasedHaplotype_SetA.txt
+$ python3 makeHapFile.py -haps data/HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.haps -legend data/HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.legend -sample_file data/HapMap3_r2_b36_2009/hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA10850,NA06984,NA07056,NA12045,NA11843,NA12890,NA12889 -output_truth data/SetA/truth_RBphasedHaplotype_SetA.txt -output_sim data/SetA/simulated_RBphasedHaplotype_SetA.txt
 ```
 
 Purpose of the application : This application simulates ReadBackPhased haplotype given *.haps,*.legend and *.sample file are provided.
@@ -109,9 +119,9 @@ Sample 8 :  NA12889
 Sample 9 :  NA12892
 Sample 10 :  NA12891
 
-Writing truth set haplotype data to a file SetA/truth_RBphasedHaplotype_SetA.txt ....
+Writing truth set haplotype data to a file data/SetA/truth_RBphasedHaplotype_SetA.txt ....
 
-Writing simulated set haplotype data to a file SetA/simulated_RBphasedHaplotype_SetA.txt; ....
+Writing simulated set haplotype data to a file data/SetA/simulated_RBphasedHaplotype_SetA.txt; ....
 
 Process completed !!! :) :)
 ```
@@ -119,7 +129,7 @@ Process completed !!! :) :)
 ```bash
 # navigate to the directory that contains "SetA" data set
 # and you should be able to see both the "truth" and "simulated" haplotype data set.
-$ ls SetA
+$ ls data/SetA
 simulated_RBphasedHaplotype_SetA.txt  truth_RBphasedHaplotype_SetA.txt
 
 ```
@@ -139,12 +149,12 @@ NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,NA12383,NA12154,
 
 ```python
 # make another directory to store files for SetB
-$ mkdir SetB
+$ mkdir data/SetB
 
 # now, run the python script 
-$ python3 makeHapFile.py -haps HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.haps -legend HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.legend -sample_file HapMap3_r2_b36_2009/hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,\
+$ python3 makeHapFile.py -haps data/HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.haps -legend data/HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.legend -sample_file data/HapMap3_r2_b36_2009/hapmap3_r2_b36_all.sample -chr 20 -samples NA12891,NA12892,NA06989,NA11917,NA12283,NA07056,NA11992,NA12057,\
 NA12383,NA12154,NA12749,NA12890,NA12776,NA12827,NA12342,NA11891,\
-NA11920,NA12778,NA12763,NA12399,NA11995,NA12750,NA12875,NA06985,NA12400 -output_truth SetB/truth_RBphasedHaplotype_SetB.txt -output_sim SetB/simulated_RBphasedHaplotype_SetB.txt
+NA11920,NA12778,NA12763,NA12399,NA11995,NA12750,NA12875,NA06985,NA12400 -output_truth data/SetB/truth_RBphasedHaplotype_SetB.txt -output_sim data/SetB/simulated_RBphasedHaplotype_SetB.txt
 ```
 
 ```html
@@ -178,9 +188,9 @@ Sample 23 :  NA11995
 Sample 24 :  NA12750
 Sample 25 :  NA12875
 
-Writing truth set haplotype data to a file &quot;SetB/truth_RBphasedHaplotype_SetB.txt&quot; ....
+Writing truth set haplotype data to a file &quot;data/SetB/truth_RBphasedHaplotype_SetB.txt&quot; ....
 
-Writing simulated set haplotype data to a file &quot;SetB/simulated_RBphasedHaplotype_SetB.txt&quot; ....
+Writing simulated set haplotype data to a file &quot;data/SetB/simulated_RBphasedHaplotype_SetB.txt&quot; ....
 
 Process completed !!! :) :)
 ```
@@ -191,15 +201,15 @@ Also, the simulated data for Set B may not be exact to the one used in this tuto
 
 ### Step 03 - Run haplotype phasing using HAPLOTYPE file
 
-##### The tutorial starting from Step 03 can be used as a model to run haplotype phasing for the data obtained from RBphased VCFs. </font>
+#### The tutorial starting from Step 03 can be used as a model to run haplotype phasing for the data obtained from RBphased VCFs. </font>
 
 #### 03 - Set (A): for HAPLOTYPE file with 10 samples
 
 ```bash
 ## make sure that the "phaseExtender" and required dependencies are installed
 # We can run phasing for single sample "NA12891" as 
-python phase-Extender.py --input SetA/simulated_RBphasedHaplotype_SetA.txt --SOI NA12891 --output temp5 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
-$ python3 phase-Extender.py --input SetA/final_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output SetA/phasedNA12891_SetA02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
+python phase-Extender.py --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI NA12891 --output temp5 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
+$ python3 phase-Extender.py --input data/SetA/final_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output data/SetA/phasedNA12891_SetA02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
 ```
 
 ##### But, instead of running phasing for only "NA12891" we will run phasing for all the samples
@@ -228,16 +238,16 @@ bash
 phaseEXT=phase-Extender.py
 
 # create empty file to store the output path for each run
-echo > files_to_merge_SetA_run01.txt
+echo > data/files_to_merge_SetA_run01.txt
 
 for item in NA12891 NA12892 NA06989 NA10850 NA06984 NA07056 NA12045 NA11843 NA12890 NA12889
 do
   # Run phaseExtension on the item (aka sample)
-  python3 ${phaseEXT} --input SetA/simulated_RBphasedHaplotype_SetA.txt --SOI ${item} --output SetA/phased_${item}_SetA_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
+  python3 ${phaseEXT} --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI ${item} --output data/SetA/phased_${item}_SetA_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
 
   # also write the path of the output directory for each sample
   # so, they can be merged later 
-  echo "SetA/phased_${item}_SetA_run01/extended_haplotype_${item}.txt" >> files_to_merge_SetA_run01.txt
+  echo "data/SetA/phased_${item}_SetA_run01/extended_haplotype_${item}.txt" >> data/files_to_merge_SetA_run01.txt
 done
 
 ```
@@ -256,7 +266,7 @@ Loading the argument variables ....
 Assigning values to the global variables ....
   - sample of interest: &quot;NA12891&quot;
   - using &quot;1&quot; processes
-  - using haplotype file &quot;SetA/final_Simulated_RBphasedHaplotype.txt&quot;
+  - using haplotype file &quot;data/SetA/final_Simulated_RBphasedHaplotype.txt&quot;
   - using log2 odds cut off of &quot;5.0&quot;
   - each consecutive haplotype block should have minimum of &quot;3&quot; SNPs
   - using maximum of &quot;25&quot; heterozygote sites in each consecutive blocks to compute transition probabilities
@@ -266,7 +276,7 @@ Assigning values to the global variables ....
   - statistics of the haplotype before and after extension will be prepared for the sample of interest i.e &quot;NA12891&quot;
   - LOD (log 2 of odds) for consecutive block will be written to the output file
 
-# Reading the input haplotype file &quot;SetA/final_Simulated_RBphasedHaplotype.txt&quot;
+# Reading the input haplotype file &quot;data/SetA/final_Simulated_RBphasedHaplotype.txt&quot;
   - Lines that have data missing for sample &quot;NA12891&quot; is written in the file &quot;phasedNA12891_SetA/missingdata_NA12891.txt&quot;
 
 # Genomic bed file is not provided ...
@@ -279,7 +289,7 @@ Assigning values to the global variables ....
   - Loaded read-backphased variants onto the memory
 
 # Haplotype reference panel is not provided....
-  - Only using the samples in the input (&quot;SetA/final_Simulated_RBphasedHaplotype.txt&quot;) data.
+  - Only using the samples in the input (&quot;data/SetA/final_Simulated_RBphasedHaplotype.txt&quot;) data.
 
 # No bed file is given ...
   - So, grouping the haplotype file only by chromosome (contig)
@@ -311,14 +321,14 @@ End :)
 
 ##### ... and it will repeat for another sample
 
-##### ... additionally the **`echo`** command will first create an empty file **`files_to_merge_SetA_run01.txt`** and subsequently save the output path of the each sample
+##### ... additionally the **`echo`** command will first create an empty file **`data/files_to_merge_SetA_run01.txt`** and subsequently save the output path of the each sample
 
 #### Now, merge all the haplotypes together
 
 ```bash
 
 # remove the first empty line from the file that store path to the extended haplotype for each sample 
-echo "$(tail -n +2 files_to_merge_SetA_run01.txt)" > files_to_merge_SetA_run01.txt
+echo "$(tail -n +2 data/files_to_merge_SetA_run01.txt)" > data/files_to_merge_SetA_run01.txt
 
 
 # set the path for "merge_haplotypePandas.py" file ; **note: Update path as need be.
@@ -328,7 +338,7 @@ mergeHAP=merge_haplotypePandas.py
 # use, a python script to merge the haplotypes together
 # we store the file in a new directory "SetA_02"
 mkdir SetA_02
-python3 ${mergeHAP} --hapList files_to_merge_SetA_run01.txt --output SetA_02
+python3 ${mergeHAP} --hapList data/files_to_merge_SetA_run01.txt --output SetA_02
 ```
 
 #### **Terminal Output:**</font>
@@ -340,61 +350,61 @@ Reading HAPLOTYPE file names obtained from phase-Extender
 
 ## Loading the haplotype files
 
-names : SetA/phased_NA12891_SetA_run01/extended_haplotype_NA12891.txt
+names : data/SetA/phased_NA12891_SetA_run01/extended_haplotype_NA12891.txt
 
 Sample name: NA12891
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 55.69 (mb)
 
-names : SetA/phased_NA12892_SetA_run01/extended_haplotype_NA12892.txt
+names : data/SetA/phased_NA12892_SetA_run01/extended_haplotype_NA12892.txt
 
 Sample name: NA12892
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 57.58 (mb)
 
-names : SetA/phased_NA06989_SetA_run01/extended_haplotype_NA06989.txt
+names : data/SetA/phased_NA06989_SetA_run01/extended_haplotype_NA06989.txt
 
 Sample name: NA06989
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 58.39 (mb)
 
-names : SetA/phased_NA10850_SetA_run01/extended_haplotype_NA10850.txt
+names : data/SetA/phased_NA10850_SetA_run01/extended_haplotype_NA10850.txt
 
 Sample name: NA10850
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 59.26 (mb)
 
-names : SetA/phased_NA06984_SetA_run01/extended_haplotype_NA06984.txt
+names : data/SetA/phased_NA06984_SetA_run01/extended_haplotype_NA06984.txt
 
 Sample name: NA06984
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 60.18 (mb)
 
-names : SetA/phased_NA07056_SetA_run01/extended_haplotype_NA07056.txt
+names : data/SetA/phased_NA07056_SetA_run01/extended_haplotype_NA07056.txt
 
 Sample name: NA07056
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 60.80 (mb)
 
-names : SetA/phased_NA12045_SetA_run01/extended_haplotype_NA12045.txt
+names : data/SetA/phased_NA12045_SetA_run01/extended_haplotype_NA12045.txt
 
 Sample name: NA12045
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 61.56 (mb)
 
-names : SetA/phased_NA11843_SetA_run01/extended_haplotype_NA11843.txt
+names : data/SetA/phased_NA11843_SetA_run01/extended_haplotype_NA11843.txt
 
 Sample name: NA11843
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 62.13 (mb)
 
-names : SetA/phased_NA12890_SetA_run01/extended_haplotype_NA12890.txt
+names : data/SetA/phased_NA12890_SetA_run01/extended_haplotype_NA12890.txt
 
 Sample name: NA12890
 Dropping columns and appending the pandas to a list
   - Worker maximum memory usage : 62.61 (mb)
 
-names : SetA/phased_NA12889_SetA_run01/extended_haplotype_NA12889.txt
+names : data/SetA/phased_NA12889_SetA_run01/extended_haplotype_NA12889.txt
 
 Sample name: NA12889
 Dropping columns and appending the pandas to a list
@@ -419,24 +429,24 @@ $ cp SetA_02/merged_haplotype.txt SetA_02/phaseExtendedHaplotype_SetA_02.txt
 
 ```bash
 # simply do
-$ ./PhaseExtenderOnForLoopSetA.sh
+$ source ./Scripts/PhaseExtenderOnForLoopSetA.sh
 ```
 
 ## Now, check the quality of the phased data
 
 **Note:** (skip this step if running phase extension on your own data)
 
-To do this we compare the **truth haplotype for SetA (i.e `"SetA/truth_RBphasedHaplotype_SetA.txt"`)** with the **output file (i.e `"SetA_run02/phaseExtendedHaplotype_SetA_02.txt"`)**. But, here we only compare the haplotype of sample "NA12891".
+To do this we compare the **truth haplotype for SetA (i.e `"data/SetA/truth_RBphasedHaplotype_SetA.txt"`)** with the **output file (i.e `"SetA_run02/phaseExtendedHaplotype_SetA_02.txt"`)**. But, here we only compare the haplotype of sample "NA12891".
 
 ```bash
 ## Extract truth haplotype set for Sample "NA12891"
-$ head -n1 SetA/truth_RBphasedHaplotype_SetA.txt 
+$ head -n1 data/SetA/truth_RBphasedHaplotype_SetA.txt 
 CHROM POS REF all-alleles NA06989:PI NA06989:PG_al NA10850:PI NA10850:PG_al NA06984:PI NA06984:PG_al NA07056:PI NA07056:PG_al NA12045:PI NA12045:PG_al NA11843:PI NA11843:PG_al NA12890:PI NA12890:PG_al NA12889:PI NA12889:PG_al NA12892:PI NA12892:PG_al NA12891:PI NA12891:PG_al
 
 # the index position of the haplotype for sample "NA12891" is 23 and 24.
 # we extract the this column but also remove the rows that are empty i.e "."
 # we also include the data from "CHROM" and "POS". This is used so we can make sure that the genotypes are coming from the same genomic position
-$ awk 'BEGIN{FS=OFS="\t"} {if ($24 !=".") print $1, $2, $23, $24}' SetA/truth_RBphasedHaplotype_SetA.txt > SetA/truth_Haplotype_NA12891.txt
+$ awk 'BEGIN{FS=OFS="\t"} {if ($24 !=".") print $1, $2, $23, $24}' data/SetA/truth_RBphasedHaplotype_SetA.txt > data/SetA/truth_Haplotype_NA12891.txt
 
 ## Now, extract the phased haplotype for Sample "NA12891"
 $ head -n1 SetA_02/phaseExtendedHaplotype_SetA_02.txt 
@@ -464,7 +474,7 @@ list.files()  # read available files and folders
 #####  Read the required data  ###### 
 
 ## Import "truth haplotype" for SetA
-truthHaplotype_NA12891 <- read.table('SetA/truth_Haplotype_NA12891.txt', header = TRUE)
+truthHaplotype_NA12891 <- read.table('data/SetA/truth_Haplotype_NA12891.txt', header = TRUE)
 head(truthHaplotype_NA12891)
   #**Note: R doesn't allow to use ":" in header name and it is automatically renamed to "."
   # you can see this in the output 
@@ -476,7 +486,7 @@ colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PG_a
 
 ## Import "phased haplotype" for SetA
 phased_SetA_NA12891 <- read.table('SetA_02/phased_Haplotype_NA12891.txt', header = TRUE)
-# or, we can use the file "extended_haplotype_NA12891.txt" from the folder "/SetA/phased_NA12891_SetA_run01/"
+# or, we can use the file "extended_haplotype_NA12891.txt" from the folder "/data/SetA/phased_NA12891_SetA_run01/"
 head(phased_SetA_NA12891)
 
 # change the name of the header
@@ -673,19 +683,19 @@ print("Completed the switch error analyses on first round of phaseExtension on S
 #### Complete analyses on Set-A  #######
 ```
 
-The haplotype in **SetA_02** are still not a global haplotype but rather larger blocks produced by joining smaller blocks. You can compare the haplotype size distribution (of sample "NA12891") before vs. after the first run. **This plots are available in the folder "../SetA/phased_NA12891_SetA_run01"**
+The haplotype in **SetA_02** are still not a global haplotype but rather larger blocks produced by joining smaller blocks. You can compare the haplotype size distribution (of sample "NA12891") before vs. after the first run. **This plots are available in the folder "../data/SetA/phased_NA12891_SetA_run01"**
 
 **Haplotype size distribution by number of variants.**
 
 Haplotype size distribution before phaseExtension            |  Haplotype size distribution after phaseExtension
 :-------------------------:|:-------------------------:
-![hap_size_byVar_NA12891_initial.png](./SetA/phased_NA12891_SetA_run01/hap_size_byVar_NA12891_initial.png)  |  ![hap_size_byVar_NA12891_final.png](./SetA/phased_NA12891_SetA_run01/hap_size_byVar_NA12891_final.png)
+![hap_size_byVar_NA12891_initial.png](./data/SetA/phased_NA12891_SetA_run01/hap_size_byVar_NA12891_initial.png)  |  ![hap_size_byVar_NA12891_final.png](./data/SetA/phased_NA12891_SetA_run01/hap_size_byVar_NA12891_final.png)
 
 **Haplotype size distribution by genomic distance.**
 
 Haplotype size distribution before phaseExtension               |  Haplotype size distribution after phaseExtension  
 :-------------------------:|:-------------------------:
-![hap_size_byGenomicRange_NA12891_initial.png](./SetA/phased_NA12891_SetA_run01/hap_size_byGenomicRange_NA12891_initial.png)  |  ![hap_size_byGenomicRange_NA12891_final.png](./SetA/phased_NA12891_SetA_run01/hap_size_byGenomicRange_NA12891_final.png)
+![hap_size_byGenomicRange_NA12891_initial.png](./data/SetA/phased_NA12891_SetA_run01/hap_size_byGenomicRange_NA12891_initial.png)  |  ![hap_size_byGenomicRange_NA12891_final.png](./data/SetA/phased_NA12891_SetA_run01/hap_size_byGenomicRange_NA12891_final.png)
 
 **So, now we proceed another round of phase extension.**
 
@@ -711,7 +721,7 @@ The codes used in this round of phase extension is provided as `BASH SHELL` scri
 
 ```bash
 # simply do
-$ ./PhaseExtenderOnForLoop_SetA_02.sh
+$ ./Scripts/PhaseExtenderOnForLoop_SetA_02.sh
 ```
 
 **and it will automatically run the following process :**
@@ -725,7 +735,7 @@ $ ./PhaseExtenderOnForLoop_SetA_02.sh
 
 **Note:** (skip this step if running phase extension on your own data)
 
-To do this we compare the **truth haplotype of sample "NA12891" for SetA (i.e `"SetA/truth_Haplotype_NA12891.txt"`)** with the **output file (i.e `"SetA_03/phased_Haplotype_NA12891.txt"`)**.
+To do this we compare the **truth haplotype of sample "NA12891" for SetA (i.e `"data/SetA/truth_Haplotype_NA12891.txt"`)** with the **output file (i.e `"SetA_03/phased_Haplotype_NA12891.txt"`)**.
 
 The R script file making comparison of the truth set against phased set is available as file **"SwitchErrorTest_PhaseExtenderSetA_02.R"**.
 
@@ -737,7 +747,7 @@ Overall we were able to join smaller haplotypes and reduce haplotype frequency f
 
 Initial number of RBphased haplotypes (n=1381) | Number of RBphased haplotypes after first phase extension (n=267) | Number of RBphased haplotypes after second round of phase extension (n=23)
 :-------------------------:|:-------------------------:|:-------------------------:
-![total_haps_NA12891_initial.png](./SetA/phased_NA12891_SetA_run01/total_haps_NA12891_initial.png) |  ![total_haps_NA12891_initial.png](./SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_initial.png)| ![total_haps_NA12891_final.png](./SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_final.png)
+![total_haps_NA12891_initial.png](./data/SetA/phased_NA12891_SetA_run01/total_haps_NA12891_initial.png) |  ![total_haps_NA12891_initial.png](./SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_initial.png)| ![total_haps_NA12891_final.png](./SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_final.png)
 
 ##### This concludes the testing of switch error for data SetA
 
@@ -783,7 +793,7 @@ The `BASH SHELL` script is available as file **"PhaseExtenderOnForLoop_SetB_02.s
 
 ```bash
 # simply run
-$ ./PhaseExtenderOnForLoop_SetB_02.sh
+$ ./Scripts/PhaseExtenderOnForLoop_SetB_02.sh
 ```
 
 The phased output for each sample will be inside directory **SetB_02/**. The merged haplotype file will be created in directory **SetB_03/**. The SHELL script also has codes to extract truth and phased haplotype for sample **"NA12891"**.

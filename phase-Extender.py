@@ -682,7 +682,7 @@ def multiproc(sample_list, pool, hapstats):
         temp_dict.update(vars(args))
         data_parameters.append(temp_dict)
 
-    print(data_parameters)
+    # print(data_parameters)
     # breakpoint()
     result = pool.imap(groupby_and_read, data_parameters)
     # result = [groupby_and_read(file_path)]
@@ -827,8 +827,6 @@ def groupby_and_read(input_parameters):
 
     del good_data_by_contig
     use_bed = "no"
-    print("HHHHH")
-    print(soi)
 
     # if phase extension is to be limited to provided bed-regions
     if use_bed == "yes":
@@ -935,7 +933,6 @@ def groupby_and_read(input_parameters):
             writelod,
             maxed_as,
         )
-        print(phase_extended_by_chr)
 
         # clear memory
         contigs_group = None
