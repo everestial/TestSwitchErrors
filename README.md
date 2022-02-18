@@ -11,7 +11,7 @@ Infer haplotype of the HapMap Sample (NA12891 from b36) using **phaseExtender** 
 - We need three types of file: Haps/Sample/Legend
 - geneticMap file is ignored in phaseExtender
 
-The language used in this tutorial vary between `python`, `R` and `bash`. The codes are included at each step. However, the associated codes are also made available as separate files.</font>
+The language used in this tutorial vary between `python`, `R` and `bash`. The codes are included at each step. However, the associated codes are also made available as separate files.
 
 ### Prerequisites
 
@@ -60,7 +60,7 @@ This is covered under the tutorial that runs haplotype phasing for sample (NA128
     In the simulated data the number of ReadBackPhased heterozygote variants in the ReadBackphased blocks is simulated to follow a poisson like distribution (not exactly possion but has a right skew). The mean number of RBphased variants is picked randomly at (5, 6, or 7) with min number of variants at 3 and maximum at 30. The simulation creates a distribution that is likely observed in real RBphased haplotype data.
 
 - The simulated ReadBackPhased HAPLOTYPE file is then used with **phaseExtender** to improve phasing.
-    >**Note:** Unlike in **ShapeIT** method which runs haplotype phasing of 1 sample, with **phaseExtender** we improve the phasing for all the samples.</font>
+    >**Note:** Unlike in **ShapeIT** method which runs haplotype phasing of 1 sample, with **phaseExtender** we improve the phasing for all the samples.
    But, in this tutorial we will then compare the phasing quality only for sample (NA12891).
 
 - Then we will join the output haplotype for each samples to a single file. This file will be used to run another round of phase extension. And we will again compare the phasing quality of sample (NA12891). This way we can recursively apply haplotype phase improvements until optimal results are obtained.
@@ -76,8 +76,8 @@ You can use your own data. But if you want to just test this application first. 
 ```bash
 
 wget https://github.com/everestial/TestSwitchErrors/raw/master/HapMap3_r2_b36_2009.zip -O HapMap3_r2_b36_2009.zip
-mv HapMap3_r2_b36_2009.zip data/HapMap3_r2_b36_2009.zip
 unzip data/HapMap3_r2_b36_2009.zip
+mv HapMap3_r2_b36_2009/ data/
 
 ```
 
@@ -136,7 +136,7 @@ simulated_RBphasedHaplotype_SetA.txt  truth_RBphasedHaplotype_SetA.txt
 
 #### We will now use this **`simulated_RBphasedHaplotype_SetA.txt`** with **phaseExtender**
 
-This simulated set may not be exactly the same because the RBphased haplotype are generated with some randomness. If you want to use the same exact simulated data you can copy and replace the generated simulation file. i.e "simulated_RBphasedHaplotype_SetA.txt".</font>
+This simulated set may not be exactly the same because the RBphased haplotype are generated with some randomness. If you want to use the same exact simulated data you can copy and replace the generated simulation file. i.e "simulated_RBphasedHaplotype_SetA.txt".
 
 **But, before doing any further phase extension let's make another simulated set (i.e `SetB`) of RBphased haplotype using 25 samples. So we can compare how sample size effects phasing quality in phaseExtender.**
 
@@ -197,11 +197,11 @@ Process completed !!! :) :)
 
 ##### We have now completed preparation of RBphased haplotypes. Keep in mind though that these RBphased data are not prepare from VCF but are simulated
 
-Also, the simulated data for Set B may not be exact to the one used in this tutorial.</font>
+Also, the simulated data for Set B may not be exact to the one used in this tutorial.
 
 ### Step 03 - Run haplotype phasing using HAPLOTYPE file
 
-#### The tutorial starting from Step 03 can be used as a model to run haplotype phasing for the data obtained from RBphased VCFs. </font>
+#### The tutorial starting from Step 03 can be used as a model to run haplotype phasing for the data obtained from RBphased VCFs
 
 #### 03 - Set (A): for HAPLOTYPE file with 10 samples
 
@@ -209,23 +209,16 @@ Also, the simulated data for Set B may not be exact to the one used in this tuto
 ## make sure that the "phaseExtender" and required dependencies are installed
 # We can run phasing for single sample "NA12891" as 
 python phase-Extender.py --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI NA12891 --output temp5 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
-$ python3 phase-Extender.py --input data/SetA/final_Simulated_RBphasedHaplotype.txt --SOI NA12891 --output data/SetA/phasedNA12891_SetA02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
+$ python3 phase-Extender.py --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI NA12891 --output data/SetA/phasedNA12891_SetA02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
 ```
 
 ##### But, instead of running phasing for only "NA12891" we will run phasing for all the samples
 
-```bash
-# We will use a prepared "BASH" shell script to run phasing on all the samples (on for-loop).
-# Let's test the SHELL that is active on the background
-$ echo $0
-bash
-```
-
-**We use the bash script given below to :**
+We use the bash script given below to :
 
 - run **phaseExtender** on all the samples.
-  - the output of each sample will be in a different folder with several haplotype related metrics.
-  - we can consider the phased haplotype of each sample as a final phase. Or, we can join the phased haplotype of each sample and further improve haplotype by re-running phasing recursively.
+- The output of each sample will be in a different folder with several haplotype related metrics.
+- We can consider the phased haplotype of each sample as a final phase. Or, we can join the phased haplotype of each sample and further improve haplotype by re-running phasing recursively.
 - We will join the output haplotype of each sample into a new HAPLOTYPE file.
   - This file will then be used for another round of phaseExtender.
 
@@ -252,7 +245,7 @@ done
 
 ```
 
-#### The above bash script will return a terminal output for each sample like ....</font>
+#### The above bash script will return a terminal output for each sample like
 
 ``` html
 Checking and importing required modules:
@@ -337,11 +330,11 @@ mergeHAP=merge_haplotypePandas.py
 
 # use, a python script to merge the haplotypes together
 # we store the file in a new directory "SetA_02"
-mkdir SetA_02
-python3 ${mergeHAP} --hapList data/files_to_merge_SetA_run01.txt --output SetA_02
+mkdir data/SetA_02
+python3 ${mergeHAP} --hapList data/files_to_merge_SetA_run01.txt --output data/SetA_02
 ```
 
-#### **Terminal Output:**</font>
+#### **Terminal Output:**
 
 ``` bash
 Checking required modules
@@ -416,11 +409,11 @@ Global maximum memory usage: 95.10 (mb)
 elapsed time:  1.6246700286865234
 ```
 
-After running above code, the output directory **SetA_02** will include a file named **"merged_haplotype.txt"**. **This file is comparable to the file we started with (i.e "simulated_RBphasedHaplotype_SetA.txt") but has larger and improved haplotype blocks.**
+After running above code, the output directory **data/SetA_02** will include a file named **"merged_haplotype.txt"**. **This file is comparable to the file we started with (i.e "simulated_RBphasedHaplotype_SetA.txt") but has larger and improved haplotype blocks.**
 
 ```BASH
 # Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetA02.txt"
-$ cp SetA_02/merged_haplotype.txt SetA_02/phaseExtendedHaplotype_SetA_02.txt
+$ cp data/SetA_02/merged_haplotype.txt data/SetA_02/phaseExtendedHaplotype_SetA_02.txt
 ```
 
 **Note:** **This completes the first round of phase extension on all the samples. It also merges each phase extended sample and prepares HAPLOTYPE file for next round.** All the above process (from running haplotype phaseExtension to merging individual haplotype for each sample) that is run on the `BASH SHELL` is made available as bash script file **"PhaseExtenderOnForLoopSetA.sh"**. This file includes code for **a)** running phaseExtension on a for-loop **b)** merging the haplotype output for each sample **c)** copying the merged haplotype as a new file.
@@ -449,11 +442,11 @@ CHROM POS REF all-alleles NA06989:PI NA06989:PG_al NA10850:PI NA10850:PG_al NA06
 $ awk 'BEGIN{FS=OFS="\t"} {if ($24 !=".") print $1, $2, $23, $24}' data/SetA/truth_RBphasedHaplotype_SetA.txt > data/SetA/truth_Haplotype_NA12891.txt
 
 ## Now, extract the phased haplotype for Sample "NA12891"
-$ head -n1 SetA_02/phaseExtendedHaplotype_SetA_02.txt 
+$ head -n1 data/SetA_02/phaseExtendedHaplotype_SetA_02.txt 
 CHROM POS REF all-alleles all-freq NA12891:PI NA12891:PG_al NA12892:PI NA12892:PG_al NA06989:PI NA06989:PG_al NA10850:PI NA10850:PG_al NA06984:PI NA06984:PG_al NA07056:PI NA07056:PG_al NA12045:PI NA12045:PG_al NA11843:PI NA11843:PG_al NA12890:PI NA12890:PG_al NA12889:PI NA12889:PG_al
 
 # here the index position of the haplotype for sample "NA12891" is 6 and 7
-$ awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' SetA_02/phaseExtendedHaplotype_SetA_02.txt > SetA_02/phased_Haplotype_NA12891.txt
+$ awk 'BEGIN{FS=OFS="\t"} {if ($7 !=".") print $1, $2, $6, $7}' data/SetA_02/phaseExtendedHaplotype_SetA_02.txt > data/SetA_02/phased_Haplotype_NA12891.txt
 ```
 
 ### Now, we import the truth and phased data into `R` to plot and quantify switch-errors
@@ -485,7 +478,7 @@ colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PG_a
 
 
 ## Import "phased haplotype" for SetA
-phased_SetA_NA12891 <- read.table('SetA_02/phased_Haplotype_NA12891.txt', header = TRUE)
+phased_SetA_NA12891 <- read.table('data/SetA_02/phased_Haplotype_NA12891.txt', header = TRUE)
 # or, we can use the file "extended_haplotype_NA12891.txt" from the folder "/data/SetA/phased_NA12891_SetA_run01/"
 head(phased_SetA_NA12891)
 
@@ -519,14 +512,14 @@ merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phase
 
 ```R
 # Now, plot the "Switch Error" points as png
-png("SwitchPoints_SetA_withOutHaplotypeBreaks.png", width = 1600, height = 600)
+png("data/rplots/SwitchPoints_SetA_withOutHaplotypeBreaks.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic coordinates.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
 #title(main = "Switch points", xlab = 'genomic coordinates', ylab = 'switch points')
 dev.off()
 ```
 
-![SwitchPoints_SetA_withOutHaplotypeBreaks.png](./SwitchPoints_SetA_withOutHaplotypeBreaks.png)
+![data/rplots/SwitchPoints_SetA_withOutHaplotypeBreaks.png](data/rplots/SwitchPoints_SetA_withOutHaplotypeBreaks.png)
 
 #### **Now, let's compute the switch error rates**
 
@@ -632,20 +625,20 @@ merged.data$match_by_pi <- match_by_pi
 
 ## Now, make switch points plot by accounting for the haplotype breaks. 
 # for that we will create another column with updated matches between truth and phased haplotypes
-png("SwitchPoints_SetA_withHaplotypeBreaks.png", width = 1600, height = 600)
+png("data/rplots/SwitchPoints_SetA_withHaplotypeBreaks.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match_by_pi, main = "Switch points over the genomic coordinates with haplotype breaks.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
 dev.off()
 ```
 
-![SwitchPoints_SetA_withHaplotypeBreaks.png](./SwitchPoints_SetA_withHaplotypeBreaks.png)
+![data/rplots/SwitchPoints_SetA_withHaplotypeBreaks.png](data/rplots/SwitchPoints_SetA_withHaplotypeBreaks.png)
 
 ```R
 ## We can now overlay the haplotype breaks position on the top of switch points plot
 abline(v=haplotype_breaks, col='red')
 ```
 
-![SwitchPoints_SetA_withHaplotypeBoundriesMarked.png](./SwitchPoints_SetA_withHaplotypeBoundriesMarked.png)
+![data/rplots/SwitchPoints_SetA_withHaplotypeBoundriesMarked.png](data/rplots/SwitchPoints_SetA_withHaplotypeBoundriesMarked.png)
 
 #### Make histogram and density plot
 
@@ -676,7 +669,7 @@ polygon(densHap, col = 'red', border = 'blue')
 
 Histogram plot of haplotype size distribution after phase extension            |  Density plot of haplotype size distribution after phase extension
 :-------------------------:|:-------------------------:
-![Histogram_ofHaplotypeSizeDistribution_SetA.png](./Histogram_ofHaplotypeSizeDistribution_SetA.png) | ![DensityPlot_ofHaplotypeSizeDistribution_SetA.png](./DensityPlot_ofHaplotypeSizeDistribution_SetA.png)
+![data/rplots/Histogram_ofHaplotypeSizeDistribution_SetA.png](./data/rplots/Histogram_ofHaplotypeSizeDistribution_SetA.png) | ![data/rplots/DensityPlot_ofHaplotypeSizeDistribution_SetA.png](data/rplots//DensityPlot_ofHaplotypeSizeDistribution_SetA.png)
 
 ```R
 print("Completed the switch error analyses on first round of phaseExtension on Set-A data.")
@@ -747,7 +740,7 @@ Overall we were able to join smaller haplotypes and reduce haplotype frequency f
 
 Initial number of RBphased haplotypes (n=1381) | Number of RBphased haplotypes after first phase extension (n=267) | Number of RBphased haplotypes after second round of phase extension (n=23)
 :-------------------------:|:-------------------------:|:-------------------------:
-![total_haps_NA12891_initial.png](./data/SetA/phased_NA12891_SetA_run01/total_haps_NA12891_initial.png) |  ![total_haps_NA12891_initial.png](./SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_initial.png)| ![total_haps_NA12891_final.png](./SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_final.png)
+![total_haps_NA12891_initial.png](./data/SetA/phased_NA12891_SetA_run01/total_haps_NA12891_initial.png) |  ![total_haps_NA12891_initial.png](./data/SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_initial.png)| ![total_haps_NA12891_final.png](data/SetA_02/phased_NA12891_SetA_run02/total_haps_NA12891_final.png)
 
 ##### This concludes the testing of switch error for data SetA
 
@@ -773,7 +766,7 @@ Now, take the data and compute switch errors. The **R** script is available as f
 
 Haplotype switch points without accounting for haplotype breaks (SE rate = 0.01272502) | Haplotype switch points after accounting for haplotype breaks (SE rate = 0.0190358)
 :-------------------------:|:-------------------------:
-![SwitchPoints_SetB_withOutHaplotypeBreaks.png](./SwitchPoints_SetB_withOutHaplotypeBreaks.png) | ![SwitchPoints_SetB_includingHaplotypeBreaks.png](./SwitchPoints_SetB_includingHaplotypeBreaks.png)
+![data/rplots/SwitchPoints_SetB_withOutHaplotypeBreaks.png](./data/rplots/SwitchPoints_SetB_withOutHaplotypeBreaks.png) | ![data/rplots/SwitchPoints_SetB_includingHaplotypeBreaks.png](./data/rplots/SwitchPoints_SetB_includingHaplotypeBreaks.png)
 
 ###### **Result:** You can see that there are fewer switchpoints when sample size is increased from 10 to 25
 
@@ -781,11 +774,11 @@ Haplotype switch points without accounting for haplotype breaks (SE rate = 0.012
 
 Haplotype size distribution before phase extension | Haplotype size distribution after phase extension
 :-------------------------:|:-------------------------:
-![hap_size_byVar_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_final.png](./SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_final.png)
+![hap_size_byVar_NA12891_initial.png](.data/SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_final.png](.data/SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_final.png)
 
 Number of haplotypes before phase extension (n = 1381) | Number of haplotypes after phase extension (n = 155)
 :-------------------------:|:-------------------------:
-![total_haps_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/total_haps_NA12891_initial.png) | ![total_haps_NA12891_final.png](./SetB/phased_NA12891_SetB_run01/total_haps_NA12891_final.png)
+![total_haps_NA12891_initial.png](.data/SetB/phased_NA12891_SetB_run01/total_haps_NA12891_initial.png) | ![total_haps_NA12891_final.png](.data/SetB/phased_NA12891_SetB_run01/total_haps_NA12891_final.png)
 
 ### 04 - (B): Recursive (run 02) haplotype phase extension of data SetB
 
@@ -808,19 +801,19 @@ With 25 samples phaseExtender was able to reduce the switch error rates to **0.0
 
 Number of haplotypes before phase extension (n = 1381) | Number of haplotypes after phase extension (n = 155) | Number of haplotypes after phase extension (n = 7)
 :-------------------------:|:-------------------------:|:-------------------------:
-![total_haps_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/total_haps_NA12891_initial.png) | ![total_haps_NA12891_final.png](./SetB/phased_NA12891_SetB_run01/total_haps_NA12891_final.png) | ![total_haps_NA12891_final.png](./SetB_02/phased_NA12891_SetB_run02/total_haps_NA12891_final.png)
+![total_haps_NA12891_initial.png](.data/SetB/phased_NA12891_SetB_run01/total_haps_NA12891_initial.png) | ![total_haps_NA12891_final.png](.data/SetB/phased_NA12891_SetB_run01/total_haps_NA12891_final.png) | ![total_haps_NA12891_final.png](.data/SetB_02/phased_NA12891_SetB_run02/total_haps_NA12891_final.png)
 
 #### Histogram of Haplotype size distribution (by number of variants)
 
 Initial | after run 01 | after run 02
 :-------------------------:|:-------------------------:|:-------------------------:
-![hap_size_byVar_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_initial.png](./SetB_02/phased_NA12891_SetB_run02/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_final.png](./SetB_02/phased_NA12891_SetB_run02/hap_size_byVar_NA12891_final.png)
+![hap_size_byVar_NA12891_initial.png](.data/SetB/phased_NA12891_SetB_run01/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_initial.png](data/SetB_02/phased_NA12891_SetB_run02/hap_size_byVar_NA12891_initial.png) | ![hap_size_byVar_NA12891_final.png](data/SetB_02/phased_NA12891_SetB_run02/hap_size_byVar_NA12891_final.png)
 
 #### Histogram of Haplotype size distribution ((by genomic distance)
 
 Initial | after run 01 | after run 02
 :-------------------------:|:-------------------------:|:-------------------------:
-![hap_size_byGenomicRange_NA12891_initial.png](./SetB/phased_NA12891_SetB_run01/hap_size_byGenomicRange_NA12891_initial.png) | ![hap_size_byGenomicRange_NA12891_final.png](./SetB/phased_NA12891_SetB_run01/hap_size_byGenomicRange_NA12891_final.png) | ![hap_size_byGenomicRange_NA12891_final.png](./SetB_02/phased_NA12891_SetB_run02/hap_size_byGenomicRange_NA12891_final.png)
+![hap_size_byGenomicRange_NA12891_initial.png](data/SetB/phased_NA12891_SetB_run01/hap_size_byGenomicRange_NA12891_initial.png) | ![hap_size_byGenomicRange_NA12891_final.png](data/SetB/phased_NA12891_SetB_run01/hap_size_byGenomicRange_NA12891_final.png) | ![hap_size_byGenomicRange_NA12891_final.png](data/SetB_02/phased_NA12891_SetB_run02/hap_size_byGenomicRange_NA12891_final.png)
 
 While the haplotypes weren't phased genome wide, another recursive haplotype phasing should yield genome wide haplotype even with lower phasing error. The already joined blocks with switchpoint will stay as they are but tuning the parameter like "lods", "numHets", "useSample", "snpTh" provides a highly controllable haplotype phasing in organisms with no available reference panel.
 

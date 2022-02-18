@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euf pipefail  # prevents all the codes from running if a error is hit in any code.
+# set -euf pipefail  # prevents all the codes from running if a error is hit in any code.
 
 ## Run phaseExtension on all the samples using "for loop" 
 
@@ -35,7 +35,7 @@ mergeHAP=merge_haplotypePandas.py
 
 # use, a python script to merge the haplotypes together
 # we store the file in a new directory "SetA_03_01"
-mkdir data/SetA_03
+mkdir -p data/SetA_03
 python3 ${mergeHAP} --hapList data/files_to_merge_setA_run02.txt --output data/SetA_03
 
 

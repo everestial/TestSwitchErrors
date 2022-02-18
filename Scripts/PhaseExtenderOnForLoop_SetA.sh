@@ -33,12 +33,12 @@ mergeHAP=merge_haplotypePandas.py
 
 # use, a python script to merge the haplotypes together
 # we store the file in a new directory "data/SetA_02"
-mkdir data/SetA_02
+mkdir -p data/SetA_02
 python ${mergeHAP} --hapList data/files_to_merge_SetA_run01.txt --output data/SetA_02
 
 
 # Make a copy and rename the above output file "merged_haplotype.txt" to "phaseExtendedHaplotype_SetA02.txt"
-cp data/SetA_02/merged_haplotype.txt data/SetA_02/phaseExtendedHaplotype_data/SetA_02.txt
+cp data/SetA_02/merged_haplotype.txt data/SetA_02/phaseExtendedHaplotype_SetA_02.txt
 rm data/SetA_02/merged_haplotype.txt
 
 

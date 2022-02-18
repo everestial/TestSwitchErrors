@@ -6,16 +6,14 @@
 ### Set the required path; 
 ## **update the path as need be with your directory 
 getwd()
-# setwd("/home/priyanka/Dropbox/SharedWithHarish/TestSwitchErrors/SwitchErrorTutorial")
-getwd()
 list.files()  # read available files and folders 
 
 
 ##########  Switch errors test - Set A (first round of phaseExtension) ########## 
 #####  Read the required data  ###### 
 
-## Import "truth haplotype" for SetA
-truthHaplotype_NA12891 <- read.table('SetA/truth_Haplotype_NA12891.txt', header = TRUE)
+## Import "truth haplotype" for data/SetA
+truthHaplotype_NA12891 <- read.table('data/SetA/truth_Haplotype_NA12891.txt', header = TRUE)
 head(truthHaplotype_NA12891)
   #**Note: R doesn't allow to use ":" in header name and it is automatically renamed to "."
   # you can see this in the output 
@@ -25,9 +23,9 @@ colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PI"]
 colnames(truthHaplotype_NA12891)[colnames(truthHaplotype_NA12891)=="NA12891.PG_al"] <- "true.NA12891.PG_al"
 
 
-## Import "phased haplotype" for SetA
-phased_SetA_NA12891 <- read.table('SetA_02/phased_Haplotype_NA12891.txt', header = TRUE)
-# or, we can use the file "extended_haplotype_NA12891.txt" from the folder "/SetA/phased_NA12891_SetA_run01/"
+## Import "phased haplotype" for data/SetA
+phased_SetA_NA12891 <- read.table('data/SetA/phased_NA12891_SetA_run01/extended_haplotype_NA12891.txt', header = TRUE)
+# or, we can use the file "extended_haplotype_NA12891.txt" from the folder "/data/SetA/phased_NA12891_SetA_run01/"
 head(phased_SetA_NA12891)
 
 # change the name of the header
@@ -53,7 +51,7 @@ merged.data$match <- ifelse((merged.data$true.NA12891.PG_al == merged.data$phase
 # .. properly phased block. But, transition from 0 -> 1 or from 1 -> 0 suggests a "Switch Error" betweeen the blocks.
 
 # Now, plot the "Switch Error" points as png
-png("SwitchPoints_SetA_withOutHaplotypeBreaks.png", width = 1600, height = 600)
+png("data/rplots/SwitchPoints_SetA_withOutHaplotypeBreaks.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match, main = "Switch points over the genomic coordinates.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
 #title(main = "Switch points", xlab = 'genomic coordinates', ylab = 'switch points')
@@ -150,7 +148,7 @@ merged.data$match_by_pi <- match_by_pi
 
 ## Now, make switch points plot by accounting for the haplotype breaks. 
 # for that we will create another column with updated matches between truth and phased haplotypes
-png("SwitchPoints_SetA_withHaplotypeBreaks.png", width = 1600, height = 600)
+png("data/rplots/SwitchPoints_SetA_withHaplotypeBreaks.png", width = 1600, height = 600)
 plot(merged.data$POS, merged.data$match_by_pi, main = "Switch points over the genomic coordinates with haplotype breaks.", type = "s", 
      xlab = "genomic position", ylab = "switch errors")
 abline(v=haplotype_breaks, col='red')
@@ -164,7 +162,7 @@ haplotype_size_numeric
 
 ## Let's plot a histogram of the haplotype size distribution 
 hisHap <- hist(haplotype_size_numeric)  # general histogram metrics for the data 
-png("Histogram_ofHaplotypeSizeDistribution_SetA.png", width = 1600, height = 600)
+png("data/rplots/Histogram_ofHaplotypeSizeDistribution_SetA.png", width = 1600, height = 600)
 hist(haplotype_size_numeric, 
      main="Histogram for Haplotype size distribution", 
      xlab="haplotype size", 
@@ -180,7 +178,7 @@ dev.off()
 
 ## Density plot
 densHap <- density(haplotype_size_numeric)
-png("DensityPlot_ofHaplotypeSizeDistribution_SetA.png", width = 1600, height = 600)
+png("data/rplots/DensityPlot_ofHaplotypeSizeDistribution_SetA.png", width = 1600, height = 600)
 plot(densHap, main = "Density plot of the haplotype size distribution")
 polygon(densHap, col = 'red', border = 'blue')
 dev.off()

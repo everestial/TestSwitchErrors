@@ -1,1 +1,6 @@
 .env/
+data/HapMap3_r2_b36_2009/*
+HapMap3_r2_b36_2009/hapmap3_r2_b36_all.sample
+HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.legend
+HapMap3_r2_b36_2009/hapmap3_r2_b36_chr20.haps
+temp?/
