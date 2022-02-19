@@ -1,0 +1,2 @@
+CHROM	NA12749:PI	num_Vars_by_PI	range_of_PI	total_haplotypes	total_Vars
+20	1.0,1050.0,1442.0	6276,2395,1842	39822877,13010991,9530747	3	10513
