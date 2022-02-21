@@ -11,7 +11,6 @@ from collections import namedtuple
 
 
 
-
 def test_first_example():
     with tempfile.TemporaryDirectory() as temp_dir1:
         soi_meta = soi_meta_cls('ms02g', [('MA605:PI', 'MA605:PG_al')], [('Sp21:PI', 'Sp21:PG_al')], 'pat_hap', 'mat_hap')

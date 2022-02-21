@@ -16,7 +16,7 @@ do
   # adding the LODs cutoff of 1 (i.e 2 times likely). 
   # ** This cutoff can be modified if more recursive phaseExtension is desired.
   # additionally, you can change "numHets" to increase the computed LODs. But, keeping large "numHets" can also result in low LODs if the blocks being phased have LD (linkage disequilibrium) close to 50.
-  python3 ${phaseEXT} --input data/SetA_02/phaseExtendedHaplotype_SetA_02.txt --SOI ${item} --output data/SetA_02/phased_${item}_SetA_run02 --numHets 40 --lods 1 --writeLOD yes --hapStats yes --addMissingSites no
+  phase-extender --input data/SetA_02/phaseExtendedHaplotype_SetA_02.txt --SOI ${item} --output data/SetA_02/phased_${item}_SetA_run02 --numHets 40 --lods 1 --writeLOD yes --hapStats yes --addMissingSites no
 
   # also write the path of the output directory for each sample
   # so, they can be merged later 

@@ -236,7 +236,7 @@ echo > data/files_to_merge_SetA_run01.txt
 for item in NA12891 NA12892 NA06989 NA10850 NA06984 NA07056 NA12045 NA11843 NA12890 NA12889
 do
   # Run phaseExtension on the item (aka sample)
-  python3 ${phaseEXT} --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI ${item} --output data/SetA/phased_${item}_SetA_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
+  phase-extender --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI ${item} --output data/SetA/phased_${item}_SetA_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
 
   # also write the path of the output directory for each sample
   # so, they can be merged later 

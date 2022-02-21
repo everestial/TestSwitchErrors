@@ -15,7 +15,7 @@ for item in NA12891 NA12892 NA06989 NA11917 NA12283 NA07056 NA11992 NA12057 \
     NA12763 NA12399 NA11995 NA12750 NA12875 NA06985 NA12400
 do
   # Run phaseExtension on the item (aka sample)
-  python3 ${phaseEXT} --input data/SetB/simulated_RBphasedHaplotype_SetB.txt --SOI ${item} --output data/SetB/phased_${item}_SetB_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
+  phase-extender --input data/SetB/simulated_RBphasedHaplotype_SetB.txt --SOI ${item} --output data/SetB/phased_${item}_SetB_run01 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no
 
   # also write the path of the output directory for each sample
   # so, they can be merged later 
