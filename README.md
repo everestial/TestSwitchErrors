@@ -2,7 +2,9 @@
 ##### Note: Parts of this tutorial can also be used as a method for doing recursive phaseExtension with ReadBackPhased data (Starting from Step 03).
 
 ### Specific goal of the tutorial:
-Infer haplotype of the HapMap Sample (NA12891 from b36) using **phaseExtender** and test the phase quality using switcherror metrices. The reported phased haplotype from several several **phaseExtender** runs is then compared to phased haplotype reported by **ShapeIT**.
+Infer haplotype of the HapMap Sample (NA12891 from b36) using **phaseExtender** and test the phase quality using switcherror metrices. The reported phased haplotype from several several **phaseExtender** runs is then compared to phased haplotype reported by **ShapeIT** as reported in these tutorials:
+  - https://gist.github.com/zhanxw/3c4e764cf1a3be6eb74c88dff08be3f4
+  - https://portal.biohpc.swmed.edu/content/training/bioinformatics-nanocourses/gwas/zhan-phasing-workshop/
 
 **Required files:** Same files used with "ShapeIT". The zipped file is available as [HapMap3_r2_b36_2009.zip](https://github.com/everestial/TestSwitchErrors/blob/master/HapMap3_r2_b36_2009.zip)
   - We need three types of file: Haps/Sample/Legend
@@ -525,6 +527,9 @@ switch_err_rate
 # 0.02048
 ```
 ###### **Result:** the switch error is 0.02048 which is comparable to ShapeIT as described in this tutorial.
+  - https://gist.github.com/zhanxw/3c4e764cf1a3be6eb74c88dff08be3f4
+  - https://portal.biohpc.swmed.edu/content/training/bioinformatics-nanocourses/gwas/zhan-phasing-workshop/
+  - 
 <br>
 
 **But, the above switch error calculation doesn't take haplotype breaks into account. Remember our haplotype isn't phased genome wide, but smaller haplotypes are merged to make a larger one.**
@@ -587,6 +592,8 @@ switch_error_rate
 # [1] 0.03269191
 ```
 ###### **Result:** after accounting for haplotype breaks the switch error is 0.03269 which is comparable to ShapeIT as described in this tutorial.
+  - https://gist.github.com/zhanxw/3c4e764cf1a3be6eb74c88dff08be3f4
+  - https://portal.biohpc.swmed.edu/content/training/bioinformatics-nanocourses/gwas/zhan-phasing-workshop/
 
 <br>
 
