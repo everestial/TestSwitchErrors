@@ -38,7 +38,7 @@ mergeHAP=merge_haplotypePandas.py
 # use, a python script to merge the haplotypes together
 # we store the file in a new directory "SetB_03_1"
 mkdir -p data/SetB_03
-python3 ${mergeHAP} --hapList data/files_to_merge_SetB_run02.txt --output data/SetB_03
+python ${mergeHAP} --hapList data/files_to_merge_SetB_run02.txt --output data/SetB_03
 
 
 

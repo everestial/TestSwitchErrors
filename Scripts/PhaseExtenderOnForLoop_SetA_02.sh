@@ -10,7 +10,8 @@ phaseEXT=phase-Extender.py
 # create empty file to store the output path for each run
 echo > data/files_to_merge_SetA_run02.txt
 
-for item in NA12891 NA12892 NA06989 NA10850 NA06984 NA07056 NA12045 NA11843 NA12890 NA12889
+for item in NA07056 NA06989 NA12891 NA12890 NA12875 NA12827 NA06985 NA12763 NA11917 NA12892
+# NA07056 NA06989 NA12891 NA12890 NA12875 NA12827 NA06985 NA12763 NA11917 NA12892
 do
   # Run phaseExtension on the item (aka sample)
   # adding the LODs cutoff of 1 (i.e 2 times likely). 
@@ -36,7 +37,7 @@ mergeHAP=merge_haplotypePandas.py
 # use, a python script to merge the haplotypes together
 # we store the file in a new directory "SetA_03_01"
 mkdir -p data/SetA_03
-python3 ${mergeHAP} --hapList data/files_to_merge_setA_run02.txt --output data/SetA_03
+python ${mergeHAP} --hapList data/files_to_merge_setA_run02.txt --output data/SetA_03
 
 
 
