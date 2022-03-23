@@ -1,0 +1,4 @@
+CHROM,max_range_pi,min_range_pi,max_num_vars_pi,min_num_vars_pi,stage
+20,2057927,104,12,3,initial
+20,3442116,1290,232,3,iteration01
+20,26087506,1949133,3386,284,iteration02

@@ -123,7 +123,7 @@ This simulated set may not be exactly the same because the RBphased haplotype ar
 
 **But, before doing any further phase extension let's make another simulated set (i.e `SetB`) of RBphased haplotype using 25 samples. So we can compare how sample size effects phasing quality in phaseExtender.**
 
-#### Set B: Make another HAPLOTYPE file with 25 samples
+#### Set B: Make another HAPLOTYPE file with 25 samples 
 
 ``` bash
 We are using samples:
@@ -146,25 +146,23 @@ Also, the simulated data for Set B may not be exact to the one used in this tuto
 
 ### Step 03 - Run haplotype phasing using HAPLOTYPE file
 
-#### The tutorial starting from Step 03 can be used as a model to run haplotype phasing for the data obtained from RBphased VCFs
+The tutorial starting from Step 03 can be used as a model to run haplotype phasing for the data obtained from RBphased VCFs
 
-#### 03 - Set (A): for HAPLOTYPE file with 10 samples
+#### Step 03 -I Set (A): for HAPLOTYPE file with 10 samples
 
 ```bash
 ## make sure that the "phaseExtender" and required dependencies are installed
 # We can run phasing for single sample "NA12891" as 
-python phase-Extender.py --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI NA12891 --output temp5 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
-$ python3 phase-Extender.py --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI NA12891 --output data/SetA/phasedNA12891_SetA02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
+$ phase-extender --input data/SetA/simulated_RBphasedHaplotype_SetA.txt --SOI NA12891 --output data/SetA/phasedNA12891_SetA02 --numHets 25 --lods 5 --writeLOD yes --hapStats yes --addMissingSites no 
 ```
 
 Look at scripts for [phase-extender for multiple samples](Scripts/PhaseExtenderOnForLoop_SetA.sh)
 
 ```bash
-# simply do
 $ source ./Scripts/PhaseExtenderOnForLoopSetA.sh
 ```
 
-## Now, check the quality of the phased data
+#### Now, check the quality of the phased data
 
 **Note:** (skip this step if running phase extension on your own data)
 
@@ -179,6 +177,7 @@ To do this we compare the **truth haplotype for SetA (i.e `"data/SetA/truth_RBph
 
 **Result:** after accounting for haplotype breaks the switch error is 0.03269 which is comparable to ShapeIT as described in this tutorial
 
+> Note: For detail analysis of set A data for 10 samples visit [this notebook](Scripts/notebook/SwitchErrorTest_PhaseExtenderSetA.ipynb)
 
 ![data/rplots/SwitchPoints_SetA_withHaplotypeBreaks.png](data/rplots/SwitchPoints_SetA_withHaplotypeBreaks.png)
 
@@ -209,7 +208,7 @@ Haplotype size distribution before phaseExtension               |  Haplotype siz
 
 **So, now we proceed another round of phase extension.**
 
-### Step 04: Recursive (run 02) haplotype phasing of data SetA
+### Step 03-II: Recursive (run 02) haplotype phasing of data SetA
 
 To make a global phased haplotype we will go through another round of phase extension. We can run the phase extension recursively until you desire. **To control for how the phase extension proceeds, "phaseExtender" provides control over several parameters.**
 
@@ -225,7 +224,7 @@ To make a global phased haplotype we will go through another round of phase exte
 
 **I plan on doing only one more round of phaseExtension. So, I will keep the several parameters low (`numHets 40`, `lods 1`), so a few but large haplotype blocks can be prepared.**
 
-The codes used in this round of phase extension is provided as `BASH SHELL` script file **"PhaseExtenderOnForLoop_SetA_02.sh"**.
+The codes used in this round of phase extension is provided as `BASH SHELL` [ this script file ](PhaseExtenderOnForLoop_SetA_02.sh).
 
 **To run the file :**
 
@@ -247,13 +246,12 @@ $ ./Scripts/PhaseExtenderOnForLoop_SetA_02.sh
 
 To do this we compare the **truth haplotype of sample "NA12891" for SetA (i.e `"data/SetA/truth_Haplotype_NA12891.txt"`)** with the **output file (i.e `"SetA_03/phased_Haplotype_NA12891.txt"`)**.
 
-The R script file making comparison of the truth set against phased set is available as file **"SwitchErrorTest_PhaseExtenderSetA_02.R"**.
+The R script file making comparison of the truth set against phased set is available as [notebook](Scripts/notebook/SwitchErrorTest_PhaseExtenderSetA_02.ipynb).
 
-<pre>
 Result: In this second round of phase extension we were able to reduce the switch error to 0.01665632 (before accounting for haplotype breaks) and 0.01748396 (after accounting for haplotype breaks).
 
 Overall we were able to join smaller haplotypes and reduce haplotype frequency from 1381 to 267 in first phase extension (run 01) and from 267 to 23 in second phase extension (run 02). With further recursive phase extension we should be able to create global haplotype.
-</pre>
+
 
 Initial number of RBphased haplotypes (n=1381) | Number of RBphased haplotypes after first phase extension (n=267) | Number of RBphased haplotypes after second round of phase extension (n=23)
 :-------------------------:|:-------------------------:|:-------------------------:
@@ -264,8 +262,7 @@ Initial number of RBphased haplotypes (n=1381) | Number of RBphased haplotypes a
 ## 03 - Set (B) : Phase extension for HAPLOTYPE file with 25 samples
 
 The SetA data only had 10 samples. Here we take 25 samples to see how it affects haplotype phasing. The process for running haplotype phaseExtension on samples from `SetB` is typically the same as above except the sample names.
-
-This tutorial includes a `BASH SHELL` script file "PhaseExtenderOnForLoop_SetB.sh" which covers all the steps from phasing, merging each phased samples, to extracting phased haplotype for sample ***"NA12891"**.
+[Script file](Scripts/PhaseExtenderOnForLoop_SetB.sh) which covers all the steps from phasing, merging each phased samples, to extracting phased haplotype for sample ***"NA12891"**.
 
 ```bash
 # simply run
@@ -277,17 +274,17 @@ $ ./PhaseExtenderOnForLoop_SetB.sh
 - run phase extension on all 25 samples inside **SetB**.
 - merge the haplotype files into a single HAPLOTYPE file "merged_haplotype.txt" inside the directory **SetB_02** and further rename it to "".
 
-## Test switch errors
+### Test switch errors for set B
 
-Now, take the data and compute switch errors. The **R** script is available as file **"SwitchErrorTest_PhaseExtenderSetB.R"**.
+Now, take the data and compute switch errors. The **R** script is available as notebook [SwitchErrorTest_PhaseExtenderSetB](Scripts/notebook/SwitchErrorTest_PhaseExtenderSetB.ipynb).
 
 Haplotype switch points without accounting for haplotype breaks (SE rate = 0.01272502) | Haplotype switch points after accounting for haplotype breaks (SE rate = 0.0190358)
 :-------------------------:|:-------------------------:
 ![data/rplots/SwitchPoints_SetB_withOutHaplotypeBreaks.png](./data/rplots/SwitchPoints_SetB_withOutHaplotypeBreaks.png) | ![data/rplots/SwitchPoints_SetB_includingHaplotypeBreaks.png](./data/rplots/SwitchPoints_SetB_includingHaplotypeBreaks.png)
 
-###### **Result:** You can see that there are fewer switchpoints when sample size is increased from 10 to 25
+**Result:** You can see that there are fewer switchpoints when sample size is increased from 10 to 25
 
-### Changes in number and size of haplotypes (by number of variants) before vs. after phase extension
+#### Changes in number and size of haplotypes (by number of variants) before vs. after phase extension
 
 Haplotype size distribution before phase extension | Haplotype size distribution after phase extension
 :-------------------------:|:-------------------------:
@@ -299,7 +296,7 @@ Number of haplotypes before phase extension (n = 1381) | Number of haplotypes af
 
 ### 04 - (B): Recursive (run 02) haplotype phase extension of data SetB
 
-The `BASH SHELL` script is available as file **"PhaseExtenderOnForLoop_SetB_02.sh"**. We are keeping lods cutoff low at "1".
+The `BASH SHELL` script is available as file [PhaseExtenderOnForLoop_SetB_02.sh](Scripts/PhaseExtenderOnForLoop_SetB_02.sh). We are keeping lods cutoff low at "1".
 
 ```bash
 # simply run
@@ -308,9 +305,9 @@ $ ./Scripts/PhaseExtenderOnForLoop_SetB_02.sh
 
 The phased output for each sample will be inside directory **SetB_02/**. The merged haplotype file will be created in directory **SetB_03/**. The SHELL script also has codes to extract truth and phased haplotype for sample **"NA12891"**.
 
-#### Test switch errors
+#### Test switch errors for second iteration of Set B
 
-The `R` script for checking quality of the phasing is available as file **"SwitchErrorTest_PhaseExtenderSetB_02.R"**.
+The `R` notebook for checking quality of the phasing is available as [ R notebook SwitchErrorTest_PhaseExtenderSetB_02.ipynb](Scripts/notebook/SwitchErrorTest_PhaseExtenderSetB_02.ipynb).
 
 #### Results
 
@@ -339,6 +336,26 @@ While the haplotypes weren't phased genome wide, another recursive haplotype pha
 **conclusion** - Increasing the sample size improves phasing but with phaseExtender you are able to get good quality phasing even with sample size as small as 10 when recursive phasing is applied.
 
 Additionally, for some positions we are able to get good resolution of proper phase state by taking low sample size. This can be seen in the phasing of block 1 & 2 in sample NA12891.
+
+
+|Set A | Set B|
+:-------------------------:|:-------------------------:
+|![total vars and haplotypes](data/plots/NA12891/setA/total_haps_stacked_with_vars2.png) | ![total_vars and haps](data/plots/NA12891/setB/total_haps_stacked_with_vars2.png)|
+
+#### Histogram of Haplotype size distribution (by number of variants)
+
+
+|Set A | Set B|
+:-------------------------:|:-------------------------:
+|![by var size a](data/plots/NA12891/setA/seta_stacked_historgram_by_var_size.png) | ![by var size b](data/plots/NA12891/setB/setb_stacked_histogram_vars_size.png)|
+
+#### Histogram of Haplotype size distribution ((by genomic distance)
+
+
+|Set A | Set B|
+:-------------------------:|:-------------------------:
+|![by genomic a](data/plots/NA12891/setA/seta_stacked_historgram_genomic_dist.png) | ![by genomic b](data/plots/NA12891/setB/setb_stacked_historgram_genomic_dist.png)|
+
 
 ***to add***
 N50 for the truth set, phased set01, set02, 03.
