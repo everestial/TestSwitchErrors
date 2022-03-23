@@ -356,6 +356,22 @@ Additionally, for some positions we are able to get good resolution of proper ph
 :-------------------------:|:-------------------------:
 |![by genomic a](data/plots/NA12891/setA/seta_stacked_historgram_genomic_dist.png) | ![by genomic b](data/plots/NA12891/setB/setb_stacked_historgram_genomic_dist.png)|
 
+### Final Stats
+
+##### For Set A NA12891 sample
+| CHROM | max_range_pi | min_range_pi | max_num_vars_pi | min_num_vars_pi | stage       |
+| ----- | ------------ | ------------ | --------------- | --------------- | ----------- |
+| 20    | 2057927      | 104          | 12              | 3               | initial     |
+| 20    | 4386983      | 753          | 237             | 3               | iteration01 |
+| 20    | 6022477      | 2245         | 879             | 3               | iteration02 |
+
+### For Set B NA12891 sample
+
+| CHROM | max_range_pi | min_range_pi | max_num_vars_pi | min_num_vars_pi | stage       |
+| ----- | ------------ | ------------ | --------------- | --------------- | ----------- |
+| 20    | 2057927      | 104          | 12              | 3               | initial     |
+| 20    | 3442116      | 1290         | 232             | 3               | iteration01 |
+| 20    | 26087506     | 1949133      | 3386            | 284             | iteration02 |
 
 ***to add***
 N50 for the truth set, phased set01, set02, 03.
